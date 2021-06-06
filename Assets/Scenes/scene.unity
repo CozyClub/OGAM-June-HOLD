@@ -1116,7 +1116,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: -1, y: 10, z: 11, w: -12}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1210,10 +1210,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c96832bc1d4664abde66bf6fb9feba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileCounter: 1
-  fileMaxPerDay: 5
+  photoMaxPerDay: 3
+  defaultPhotoFileFormat: 1
   photoDisplay: {fileID: 1978849606}
-  pictureFrame: {fileID: 203097782}
+  photoFrame: {fileID: 203097782}
 --- !u!20 &2140375696
 Camera:
   m_ObjectHideFlags: 0
