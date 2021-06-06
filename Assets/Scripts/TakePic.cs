@@ -116,7 +116,7 @@ public class TakePic : MonoBehaviour
     private void SetupPhotoDirectory()
     {
         // Set up photo directory
-        string photoDirectoryPath = Application.dataPath + defaultPhotoDirectoryPath;
+        string photoDirectoryPath = GetPhotoDirectoryPath();
         Debug.Log("Photo directory path is: " + photoDirectoryPath);
 
         DirectoryInfo dir = new DirectoryInfo(photoDirectoryPath);
@@ -133,6 +133,6 @@ public class TakePic : MonoBehaviour
 
     private string GetPhotoDirectoryPath()
     {
-        return Application.dataPath + defaultPhotoDirectoryPath;
+        return Application.persistentDataPath + defaultPhotoDirectoryPath;
     }
 }
