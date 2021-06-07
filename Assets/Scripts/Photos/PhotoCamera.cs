@@ -3,18 +3,20 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TakePic : MonoBehaviour
+public class PhotoCamera : MonoBehaviour
 {
     public int photoMaxPerDay = 3; // low default num for testing
 
     /// <summary>
     /// Photo directory configuration - can make this configurable in the future
     /// </summary>
-    public readonly string defaultPhotoDirectoryPath = "/Resources/Photos/";
+    public readonly string defaultPhotoDirectoryPath = "/SavedPhotos/";
     public PhotoFileFormat defaultPhotoFileFormat = PhotoFileFormat.PNG;
 
-    int photoCount = 0;
-    KeyCode PhotoKey;
+    KeyCode StartPhotoModeKey = KeyCode.Space;
+    KeyCode TakePhotoKey = KeyCode.Mouse0;
+    KeyCode ExitPhotoModeKey = KeyCode.Mouse1;
+
     Texture2D image;
     KeyCtrl keys;
     public RawImage photoDisplay;
@@ -29,33 +31,55 @@ public class TakePic : MonoBehaviour
     public void Start()
     {
         photo = photoDisplay.gameObject.transform.parent.gameObject;
+
         keys = KeyCtrl.keyctrl;
-        //This is found under the gameobject named "GameCtrls". Default space
-        PhotoKey = keys.photo.key;
+        StartPhotoModeKey = keys.startPhotoModeKey.key;
+        TakePhotoKey = keys.takePhotoKey.key;
+        ExitPhotoModeKey = keys.exitPhotoModeKey.key;
+
         photo.SetActive(false);
         Camera = GetComponent<Camera>();
         photoFrame.SetActive(false);
 
         SetupPhotoDirectory();
+        PhotoCollectionDTO.LoadData();
     }
 
     private void LateUpdate()
     {
-        // Hold down PhotoKey to see frame
-        if (Input.GetKeyDown(PhotoKey))
+        this.EvaluateCameraControls();
+    }
+
+    private void EvaluateCameraControls()
+    {
+        // Show photo frame when StartPhotoModeKey is pressed
+        if (Input.GetKeyDown(StartPhotoModeKey))
         {
-            photoFrame.SetActive(true);
+            if (!photoFrame.activeSelf)
+            {
+                photoFrame.SetActive(true);
+            }
         }
 
-        // Release PhotoKey to take picture
-        if (Input.GetKeyUp(PhotoKey))
+        if (photoFrame.activeSelf)
         {
-            Capture();
+            // Release PhotoKey to take picture
+            if (Input.GetKeyDown(TakePhotoKey))
+            {
+                Capture();
+            }
+
+            // Exit photo frame if PhotoKeyCancel is pressed
+            if (Input.GetKeyDown(ExitPhotoModeKey))
+            {
+                Debug.Log("Exiting photo frame");
+                photoFrame.SetActive(false);
+            }
         }
     }
 
     /// <summary>
-    /// Performs photo capture. Save the rendertexture as a png in resources folder to be able to reference it. Probably not the best way to do this
+    /// Performs photo capture and save.
     /// </summary>
     public void Capture()
     {
@@ -64,8 +88,7 @@ public class TakePic : MonoBehaviour
 
         // Disallows photo capture if current photo count exceeds max.
         // To do - give warning that max photos have been taken.
-        Debug.Log($"Photo #{photoCount} captured.");
-        if (photoCount >= photoMaxPerDay)
+        if (PhotoCollectionDTO.GetPhotoCount() >= photoMaxPerDay)
         {
             Debug.LogWarning("Max photos taken, returning.");
             return;
@@ -73,7 +96,6 @@ public class TakePic : MonoBehaviour
 
         RenderTexture myRenderTexture = RenderTexture.active;
         RenderTexture.active = Camera.targetTexture;
-
         Camera.Render();
 
         // Create new texture to width and height of photo camera.
@@ -83,13 +105,23 @@ public class TakePic : MonoBehaviour
         RenderTexture.active = myRenderTexture;
 
         byte[] bytes = image.EncodeToPNG();
+        PhotoDTO photo = new PhotoDTO(bytes, defaultPhotoFileFormat);
 
-        // Write photo to photo directory path
-        File.WriteAllBytes(PhotoDirectoryPath + photoCount + ".png", bytes);
-        Debug.Log(PhotoDirectoryPath + photoCount + ".png");
-        photoCount++;
+        // Get any capturable objects identified in the camera raycast
+        Transform transform = Camera.transform;
+        LayerMask mask = LayerMask.GetMask("Capturable");
 
-        StartCoroutine(DisplayPhoto());
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 20.0f, mask))
+        {
+            Capturable capturableComponent = hit.transform.gameObject.GetComponent<Capturable>();
+            photo.AddIdentifiableObject(capturableComponent);
+        }
+
+        // Adding photo collection and saving. SaveData() saves the whole collection so we should probably move this out somewhere else.
+        PhotoCollectionDTO.AddPhoto(photo);
+        PhotoCollectionDTO.SaveData();
+
+        StartCoroutine(this.DisplayPhoto());
     }
 
     /// <summary>
@@ -116,7 +148,7 @@ public class TakePic : MonoBehaviour
     private void SetupPhotoDirectory()
     {
         // Set up photo directory
-        string photoDirectoryPath = GetPhotoDirectoryPath();
+        string photoDirectoryPath = this.GetPhotoDirectoryPath();
         Debug.Log("Photo directory path is: " + photoDirectoryPath);
 
         DirectoryInfo dir = new DirectoryInfo(photoDirectoryPath);
@@ -124,15 +156,10 @@ public class TakePic : MonoBehaviour
         {
             Directory.CreateDirectory(photoDirectoryPath);
         }
-
-        string fileExtension = defaultPhotoFileFormat.ToFileExtension();
-        FileSystemInfo[] systemInfos = dir.GetFileSystemInfos($"*.{fileExtension}");
-        Debug.Log("System info count is: " + systemInfos.Length);
-        photoCount = systemInfos.Length;
     }
 
     private string GetPhotoDirectoryPath()
     {
-        return Application.persistentDataPath + defaultPhotoDirectoryPath;
+        return $"{Application.persistentDataPath}{defaultPhotoDirectoryPath}";
     }
 }

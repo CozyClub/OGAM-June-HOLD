@@ -204,6 +204,39 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203097782}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &482367753 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a94f2114c1424574d98e7afaac92f6a8, type: 3}
+  m_PrefabInstance: {fileID: 898918423}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &482367754
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482367753}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2.4981885
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.74909425, z: 0}
+--- !u!114 &482367755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482367753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83a09401e5dce13439daeb004803baf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Clover
+  CapturableType: 1
 --- !u!1 &500726892
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,9 +566,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4276630799965825149, guid: a94f2114c1424574d98e7afaac92f6a8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -2797864980895152918, guid: a94f2114c1424574d98e7afaac92f6a8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -2240151287705473546, guid: a94f2114c1424574d98e7afaac92f6a8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -412989040442181847, guid: a94f2114c1424574d98e7afaac92f6a8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a94f2114c1424574d98e7afaac92f6a8, type: 3}
       propertyPath: m_Name
       value: cloverBig
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a94f2114c1424574d98e7afaac92f6a8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558716870218021221, guid: a94f2114c1424574d98e7afaac92f6a8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4140668533725440856, guid: a94f2114c1424574d98e7afaac92f6a8, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a94f2114c1424574d98e7afaac92f6a8, type: 3}
