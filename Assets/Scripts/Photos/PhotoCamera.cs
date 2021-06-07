@@ -50,6 +50,18 @@ public class PhotoCamera : MonoBehaviour
         this.EvaluateCameraControls();
     }
 
+    private bool IsObjectVisibleOnPlanes(Capturable capturable, Plane[] planes)
+    {
+        if (GeometryUtility.TestPlanesAABB(planes, capturable.GetComponent<Collider>().bounds))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     private void EvaluateCameraControls()
     {
         // Show photo frame when StartPhotoModeKey is pressed
@@ -107,14 +119,15 @@ public class PhotoCamera : MonoBehaviour
         byte[] bytes = image.EncodeToPNG();
         PhotoDTO photo = new PhotoDTO(bytes, defaultPhotoFileFormat);
 
-        // Get any capturable objects identified in the camera raycast
-        Transform transform = Camera.transform;
-        LayerMask mask = LayerMask.GetMask("Capturable");
+        Capturable[] capturables = GameObject.FindObjectsOfType<Capturable>();
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera);
 
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 20.0f, mask))
+        foreach (Capturable capturable in capturables)
         {
-            Capturable capturableComponent = hit.transform.gameObject.GetComponent<Capturable>();
-            photo.AddIdentifiableObject(capturableComponent);
+            if(IsObjectVisibleOnPlanes(capturable, planes))
+            {
+                photo.AddIdentifiableObject(capturable);
+            }
         }
 
         // Adding photo collection and saving. SaveData() saves the whole collection so we should probably move this out somewhere else.
