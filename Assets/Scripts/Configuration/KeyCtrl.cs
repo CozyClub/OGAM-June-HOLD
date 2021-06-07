@@ -1,11 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class KeyCtrl : MonoBehaviour {
+public class KeyCtrl : MonoBehaviour
+{
     public static KeyCtrl keyctrl;
     
-    public KeyWithName photo;
+    public KeyWithName startPhotoModeKey;
+    public KeyWithName takePhotoKey;
+    public KeyWithName exitPhotoModeKey;
     public KeyWithName interact;
     public KeyWithName secondaryInteract;
     public KeyWithName menu;
@@ -19,18 +21,20 @@ public class KeyCtrl : MonoBehaviour {
     private void Awake()
     {
         if (keyctrl == null)
-        { keyctrl = this; }
+        {
+            keyctrl = this;
+        }
         else if (keyctrl != this)
         {
             Destroy(gameObject);
         }
+
         DontDestroyOnLoad(gameObject);
 
-        AllCommands.AddMore(photo, interact, secondaryInteract, menu, mainScrollLeft, mainScrollRight, secondScrollRight, secondScrollLeft, menu, quit);
+        AllCommands.AddMore(startPhotoModeKey, takePhotoKey, exitPhotoModeKey, interact, secondaryInteract, menu, mainScrollLeft, mainScrollRight, secondScrollRight, secondScrollLeft, menu, quit);
     }
     
 }
-
 
 //Fixa nar jag har tid, fult nu
  public static class ListExtenstions
