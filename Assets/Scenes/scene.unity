@@ -629,9 +629,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b97fcab5aa2f5546b7a17b90919fde7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  photo:
-    name: pic
+  startPhotoModeKey:
+    name: Start photo mode
     key: 32
+  takePhotoKey:
+    name: Take photo
+    key: 323
+  exitPhotoModeKey:
+    name: Exit photo mode
+    key: 324
   interact:
     name: doStuff
     key: 304
