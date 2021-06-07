@@ -19,5 +19,6 @@ public enum CapturableType
     None = 0,
     Flora = 1,
     Fauna = 2,
-    Person = 3
+    Person = 3,
+    Landscape = 4
 }

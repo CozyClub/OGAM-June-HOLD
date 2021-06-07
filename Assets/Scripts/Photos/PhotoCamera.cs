@@ -1,11 +1,13 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PhotoCamera : MonoBehaviour
 {
-    public int photoMaxPerDay = 3; // low default num for testing
+    public int photoMaxPerDay = 10; // low default num for testing
 
     /// <summary>
     /// Photo directory configuration - can make this configurable in the future
@@ -48,18 +50,6 @@ public class PhotoCamera : MonoBehaviour
     private void LateUpdate()
     {
         this.EvaluateCameraControls();
-    }
-
-    private bool IsObjectVisibleOnPlanes(Capturable capturable, Plane[] planes)
-    {
-        if (GeometryUtility.TestPlanesAABB(planes, capturable.GetComponent<Collider>().bounds))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     private void EvaluateCameraControls()
@@ -119,12 +109,16 @@ public class PhotoCamera : MonoBehaviour
         byte[] bytes = image.EncodeToPNG();
         PhotoDTO photo = new PhotoDTO(bytes, defaultPhotoFileFormat);
 
-        Capturable[] capturables = GameObject.FindObjectsOfType<Capturable>();
+        IEnumerable<Capturable> capturables = GameObject.FindObjectsOfType<Capturable>();
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera);
+
+        // We should create some kind of priority to grab like max 10 capturables - attempting to sort by distance from camera
+        capturables = capturables.OrderBy(x => x.transform.position.z);
+        IList<Plane> orderedPlanes = planes.OrderBy(x => x.distance).ToList();
 
         foreach (Capturable capturable in capturables)
         {
-            if(IsObjectVisibleOnPlanes(capturable, planes))
+            if(capturable.IsVisibleOnCameraPlanes(orderedPlanes))
             {
                 photo.AddIdentifiableObject(capturable);
             }
