@@ -15,12 +15,7 @@ public class PhotoCamera : MonoBehaviour
     public readonly string defaultPhotoDirectoryPath = "/SavedPhotos/";
     public PhotoFileFormat defaultPhotoFileFormat = PhotoFileFormat.PNG;
 
-    KeyCode StartPhotoModeKey = KeyCode.Space;
-    KeyCode TakePhotoKey = KeyCode.Mouse0;
-    KeyCode ExitPhotoModeKey = KeyCode.Mouse1;
-
     Texture2D image;
-    KeyCtrl keys;
     public RawImage photoDisplay;
     GameObject photo;
 
@@ -34,11 +29,6 @@ public class PhotoCamera : MonoBehaviour
     {
         photo = photoDisplay.gameObject.transform.parent.gameObject;
 
-        keys = KeyCtrl.keyctrl;
-        StartPhotoModeKey = keys.startPhotoModeKey.key;
-        TakePhotoKey = keys.takePhotoKey.key;
-        ExitPhotoModeKey = keys.exitPhotoModeKey.key;
-
         photo.SetActive(false);
         Camera = GetComponent<Camera>();
         photoFrame.SetActive(false);
@@ -47,38 +37,28 @@ public class PhotoCamera : MonoBehaviour
         PhotoCollectionDTO.LoadData();
     }
 
-    private void LateUpdate()
+    #region input controlled functions
+    public void OpenCamera()
     {
-        this.EvaluateCameraControls();
+        if (Time.timeScale == 0f || photoFrame.activeSelf) return;
+
+        photoFrame.SetActive(true);
     }
 
-    private void EvaluateCameraControls()
+    public void CloseCamera()
     {
-        // Show photo frame when StartPhotoModeKey is pressed
-        if (Input.GetKeyDown(StartPhotoModeKey))
-        {
-            if (!photoFrame.activeSelf)
-            {
-                photoFrame.SetActive(true);
-            }
-        }
+        if (Time.timeScale == 0f) return;
 
-        if (photoFrame.activeSelf)
-        {
-            // Release PhotoKey to take picture
-            if (Input.GetKeyDown(TakePhotoKey))
-            {
-                Capture();
-            }
-
-            // Exit photo frame if PhotoKeyCancel is pressed
-            if (Input.GetKeyDown(ExitPhotoModeKey))
-            {
-                Debug.Log("Exiting photo frame");
-                photoFrame.SetActive(false);
-            }
-        }
+        photoFrame.SetActive(false);
     }
+
+    public void TakePicture()
+    {
+        if (Time.timeScale == 0f || !photoFrame.activeSelf) return;
+
+        Capture();
+    }
+    #endregion
 
     /// <summary>
     /// Performs photo capture and save.

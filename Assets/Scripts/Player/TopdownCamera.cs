@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CamFollow : MonoBehaviour
+// TODO update this to allow camera rotations separate from player rotations
+// need playtesting to determine way forward
+public class TopdownCamera : MonoBehaviour
 {
     // Here's where the bot transform goes
     public Transform Target;
