@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,28 +10,39 @@ public class PhotoCamera : MonoBehaviour
     /// <summary>
     /// Photo directory configuration - can make this configurable in the future
     /// </summary>
-    public readonly string defaultPhotoDirectoryPath = "/SavedPhotos/";
-    public PhotoFileFormat defaultPhotoFileFormat = PhotoFileFormat.PNG;
+    PhotoFileFormat defaultPhotoFileFormat = PhotoFileFormat.PNG;
 
     KeyCode StartPhotoModeKey = KeyCode.Space;
     KeyCode TakePhotoKey = KeyCode.Mouse0;
     KeyCode ExitPhotoModeKey = KeyCode.Mouse1;
 
-    Texture2D image;
     KeyCtrl keys;
     public RawImage photoDisplay;
-    GameObject photo;
 
-    //This is just to see what you're aiming at when taking a picture
+    /// <summary>
+    /// Photo image game object
+    /// </summary>
+    static GameObject photo;
+    static Texture2D image;
+
+    /// <summary>
+    /// The photo frame to show where robot is aiming camera.
+    /// </summary>
     public GameObject photoFrame;
-    private Camera Camera;
+    public Camera Camera;
 
-    public string PhotoDirectoryPath => GetPhotoDirectoryPath();
+    /// <summary>
+    /// Image data hydrated after photo is taken.
+    /// </summary>
+    public static PhotoDTO imageData;
+
+    public string PhotoDirectoryPath => PhotoCollectionDTO.GetPhotoDirectoryPath();
 
     public void Start()
     {
         photo = photoDisplay.gameObject.transform.parent.gameObject;
 
+        // Configure game input keys
         keys = KeyCtrl.keyctrl;
         StartPhotoModeKey = keys.startPhotoModeKey.key;
         TakePhotoKey = keys.takePhotoKey.key;
@@ -43,7 +52,7 @@ public class PhotoCamera : MonoBehaviour
         Camera = GetComponent<Camera>();
         photoFrame.SetActive(false);
 
-        SetupPhotoDirectory();
+        PhotoCollectionDTO.SetupPhotoDirectory();
         PhotoCollectionDTO.LoadData();
     }
 
@@ -68,7 +77,7 @@ public class PhotoCamera : MonoBehaviour
             // Release PhotoKey to take picture
             if (Input.GetKeyDown(TakePhotoKey))
             {
-                Capture();
+                RenderCapture();
             }
 
             // Exit photo frame if PhotoKeyCancel is pressed
@@ -83,10 +92,12 @@ public class PhotoCamera : MonoBehaviour
     /// <summary>
     /// Performs photo capture and save.
     /// </summary>
-    public void Capture()
+    public void RenderCapture()
     {
         // Deactivates photo frame used for previewing photo before capture.
         photoFrame.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
         // Disallows photo capture if current photo count exceeds max.
         // To do - give warning that max photos have been taken.
@@ -107,7 +118,8 @@ public class PhotoCamera : MonoBehaviour
         RenderTexture.active = myRenderTexture;
 
         byte[] bytes = image.EncodeToPNG();
-        PhotoDTO photo = new PhotoDTO(bytes, defaultPhotoFileFormat);
+
+        PhotoDTO photoDTO = new PhotoDTO(bytes, defaultPhotoFileFormat);
 
         IEnumerable<Capturable> capturables = GameObject.FindObjectsOfType<Capturable>();
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera);
@@ -118,55 +130,27 @@ public class PhotoCamera : MonoBehaviour
 
         foreach (Capturable capturable in capturables)
         {
-            if(capturable.IsVisibleOnCameraPlanes(orderedPlanes))
+            if (capturable.IsVisibleOnCameraPlanes(orderedPlanes))
             {
-                photo.AddIdentifiableObject(capturable);
+                photoDTO.AddIdentifiableObject(capturable);
             }
         }
 
-        // Adding photo collection and saving. SaveData() saves the whole collection so we should probably move this out somewhere else.
-        PhotoCollectionDTO.AddPhoto(photo);
-        PhotoCollectionDTO.SaveData();
+        imageData = photoDTO;
+        DisplayPhotoPreview();
 
-        StartCoroutine(this.DisplayPhoto());
     }
 
-    /// <summary>
-    /// Little short preview of the photo taken
-    /// </summary>
-    public IEnumerator DisplayPhoto()
+    void DisplayPhotoPreview()
     {
-        yield return new WaitForSeconds(1);
-
+        // Display photo in frame
         photoDisplay.texture = image;
         photo.SetActive(true);
+    }
 
-        yield return new WaitForSeconds(4);
-
+    public static void FinishCamera()
+    {
         photo.SetActive(false);
         Destroy(image);
-
-        yield return null;
-    }
-
-    /// <summary>
-    /// Initializes photo path directory if doesn't exist yet.
-    /// </summary>
-    private void SetupPhotoDirectory()
-    {
-        // Set up photo directory
-        string photoDirectoryPath = this.GetPhotoDirectoryPath();
-        Debug.Log("Photo directory path is: " + photoDirectoryPath);
-
-        DirectoryInfo dir = new DirectoryInfo(photoDirectoryPath);
-        if (!dir.Exists)
-        {
-            Directory.CreateDirectory(photoDirectoryPath);
-        }
-    }
-
-    private string GetPhotoDirectoryPath()
-    {
-        return $"{Application.persistentDataPath}{defaultPhotoDirectoryPath}";
     }
 }

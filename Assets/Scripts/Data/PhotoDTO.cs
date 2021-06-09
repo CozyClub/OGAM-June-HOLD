@@ -24,14 +24,14 @@ public class PhotoDTO
     }
 
     public Guid Id;
-    byte[] PhotoData;
+    public byte[] PhotoData;
     PhotoFileFormat? PhotoFileFormat;
     DateTime UtcTimeStamp;
     IList<CapturableDTO> MainIdentifiableObjects;
 
     public void AddIdentifiableObject(Capturable capturable)
     {
-        Debug.Log($"Adding id object: {capturable.Name}.");
+        Debug.Log($"Adding an identifiable object to image metadata with the name: '{capturable.Name}'.");
         MainIdentifiableObjects.Add(new CapturableDTO(capturable));
     }
 }
