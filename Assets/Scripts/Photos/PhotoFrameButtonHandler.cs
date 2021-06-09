@@ -8,6 +8,8 @@ public class PhotoFrameButtonHandler : MonoBehaviour
 {
     //Make sure to attach these Buttons in the Inspector
     public Button keepButton, discardButton, viewAlbumButton;
+    public GameObject album;
+    public GameObject photoFrame;
 
     void Start()
     {
@@ -42,5 +44,8 @@ public class PhotoFrameButtonHandler : MonoBehaviour
 
     void ViewAlbumOnClick()
     {
+        Debug.LogWarning($"loading photos. this many: {album.name}");
+        album.SetActive(true);
+        photoFrame.SetActive(false);
     }
 }
