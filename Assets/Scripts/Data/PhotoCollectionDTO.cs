@@ -22,7 +22,7 @@ public class PhotoCollectionDTO
         Debug.Log($"Adding new photo with id: {photo.Id}.");
         photos.Add(new KeyValuePair<Guid, PhotoDTO>(photo.Id, photo));
 
-        count = (short)photos.Count;
+        count = (short)photos.Count();
     }
 
     public static PhotoDTO GetPhoto(Guid id)
@@ -46,7 +46,7 @@ public class PhotoCollectionDTO
     {
         bool success = false;
 
-        using(FileStream file = File.Create(collectionPath))
+        using (FileStream file = File.Create(collectionPath))
         {
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(file, photos);
@@ -56,7 +56,7 @@ public class PhotoCollectionDTO
         return success;
     }
 
-    public static IDictionary<Guid, PhotoDTO> LoadData(int countToLoad = 0)
+    public static IDictionary<Guid, PhotoDTO> LoadData()
     {
         Dictionary<Guid, PhotoDTO> photosFromSave = null;
         if (File.Exists(collectionPath))
@@ -66,17 +66,30 @@ public class PhotoCollectionDTO
                 BinaryFormatter bf = new BinaryFormatter();
                 fs.Position = 0;
                 photosFromSave = (Dictionary<Guid, PhotoDTO>)bf.Deserialize(fs);
-                photos = photosFromSave;
             }
         }
 
-        if(countToLoad > 0)
+        photos = photosFromSave;
+        count = (short)photos.Count();
+
+        return photosFromSave;
+    }
+
+    public static IEnumerable<PhotoDTO> PagePhotoCollection(int take = 0, int skip = 0)
+    {
+        IEnumerable<PhotoDTO> pagedPhotos = photos.Select(x => x.Value).OrderBy(x => x.UtcTimeStamp);
+
+        if (skip > 0)
         {
-            photosFromSave = photos.Take(countToLoad).ToDictionary(x => x.Key, x => x.Value);
+            pagedPhotos = pagedPhotos.Skip(skip);
         }
 
-        count = (short)photos.Count;
-        return photosFromSave;
+        if (take > 0)
+        {
+            pagedPhotos = pagedPhotos.Take(take);
+        }
+
+        return pagedPhotos;
     }
 
     /// <summary>

@@ -8,35 +8,56 @@ class PhotoAlbum : MonoBehaviour
 {
     static GameObject album;
     public RawImage albumPhoto, albumPhoto1, albumPhoto2, albumPhoto3;
-    public Button exitAlbumButton;
+    public Button exitAlbumButton, nextPageButton, backPageButton;
+    private int currentPage;
+    private int pageSize;
 
     public void Start()
     {
+        currentPage = 0;
+        pageSize = 4;
+
         exitAlbumButton.onClick.AddListener(ExitAlbumOnClick);
+        nextPageButton.onClick.AddListener(NextPageOnClick);
+        backPageButton.onClick.AddListener(BackPageOnClick);
+        backPageButton.gameObject.SetActive(false);
+
         album = albumPhoto1.gameObject.transform.parent.gameObject;
 
         LoadAlbumPage();
     }
 
-    private void LoadAlbumPage()
+    private void LoadAlbumPage(int skip = 0)
     {
-        IDictionary<Guid, PhotoDTO> photos = PhotoCollectionDTO.LoadData(4);
+        List<PhotoDTO> photos = PhotoCollectionDTO.PagePhotoCollection(pageSize, skip).ToList();
 
-        Texture2D tex = new Texture2D((int)albumPhoto.rectTransform.rect.width, (int)albumPhoto.rectTransform.rect.height);
-        tex.LoadImage(photos.ElementAt(0).Value.PhotoData);
-        albumPhoto.texture = tex;
+        if(photos.ElementAt(0) != null)
+        {
+            Texture2D tex = new Texture2D((int)albumPhoto.rectTransform.rect.width, (int)albumPhoto.rectTransform.rect.height);
+            tex.LoadImage(photos.ElementAt(0).PhotoData);
+            albumPhoto.texture = tex;
+        }
 
-        Texture2D tex1 = new Texture2D((int)albumPhoto1.rectTransform.rect.width, (int)albumPhoto1.rectTransform.rect.height);
-        tex1.LoadImage(photos.ElementAt(1).Value.PhotoData);
-        albumPhoto1.texture = tex1;
+        if(photos.ElementAt(1) != null)
+        {
+            Texture2D tex1 = new Texture2D((int)albumPhoto1.rectTransform.rect.width, (int)albumPhoto1.rectTransform.rect.height);
+            tex1.LoadImage(photos.ElementAt(1).PhotoData);
+            albumPhoto1.texture = tex1;
+        }
 
-        Texture2D tex2 = new Texture2D((int)albumPhoto2.rectTransform.rect.width, (int)albumPhoto2.rectTransform.rect.height);
-        tex2.LoadImage(photos.ElementAt(2).Value.PhotoData);
-        albumPhoto2.texture = tex2;
+        if (photos.ElementAt(2) != null)
+        {
+            Texture2D tex2 = new Texture2D((int)albumPhoto2.rectTransform.rect.width, (int)albumPhoto2.rectTransform.rect.height);
+            tex2.LoadImage(photos.ElementAt(2).PhotoData);
+            albumPhoto2.texture = tex2;
+        }
 
-        Texture2D tex3 = new Texture2D((int)albumPhoto3.rectTransform.rect.width, (int)albumPhoto3.rectTransform.rect.height);
-        tex3.LoadImage(photos.ElementAt(3).Value.PhotoData);
-        albumPhoto3.texture = tex3;
+        if (photos.ElementAt(3) != null)
+        {
+            Texture2D tex3 = new Texture2D((int)albumPhoto3.rectTransform.rect.width, (int)albumPhoto3.rectTransform.rect.height);
+            tex3.LoadImage(photos.ElementAt(3).PhotoData);
+            albumPhoto3.texture = tex3;
+        }
     }
 
     private void ExitAlbumOnClick()
@@ -46,5 +67,51 @@ class PhotoAlbum : MonoBehaviour
         Cursor.visible = false;
 
         PhotoCamera.FinishCamera();
+    }
+
+    private void NextPageOnClick()
+    {
+        short photoCount = PhotoCollectionDTO.GetPhotoCount();
+        int maxPageNeed = photoCount / pageSize; // TODO: check on rounding
+        if (currentPage >= maxPageNeed) return;
+
+        if(currentPage < maxPageNeed)
+        {
+            LoadAlbumPage(currentPage * pageSize);
+        }
+
+        if(currentPage == maxPageNeed)
+        {
+            nextPageButton.gameObject.SetActive(false);
+        }
+
+        if (currentPage < 1)
+        {
+            backPageButton.gameObject.SetActive(true);
+        }
+
+        ++currentPage;
+    }
+
+    private void BackPageOnClick()
+    {
+        if (currentPage == 0) return;
+
+        if(currentPage <= 2)
+        {
+            LoadAlbumPage((currentPage - 1) * pageSize);
+        }
+
+        if(currentPage == 1)
+        {
+            backPageButton.gameObject.SetActive(false);
+        }
+
+        if(currentPage == 2)
+        {
+            nextPageButton.gameObject.SetActive(true);
+        }
+
+        --currentPage;
     }
 }

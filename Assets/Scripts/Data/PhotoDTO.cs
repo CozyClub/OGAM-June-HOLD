@@ -26,7 +26,7 @@ public class PhotoDTO
     public Guid Id;
     public byte[] PhotoData;
     PhotoFileFormat? PhotoFileFormat;
-    DateTime UtcTimeStamp;
+    public DateTime UtcTimeStamp;
     IList<CapturableDTO> MainIdentifiableObjects;
 
     public void AddIdentifiableObject(Capturable capturable)
