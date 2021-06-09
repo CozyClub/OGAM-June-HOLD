@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
 public class PlayerMovement : MonoBehaviour
 {
     #region variables
@@ -10,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     private const float AVG_DEGREE = 180f;
     private const float CAMERA_LOOK_DISTANCE = 5f;
     [Header("Player movement")]
+    [SerializeField]
+    private float acceleration = 25f;
     [SerializeField]
     private float forwardMoveSpeed = 3f;
     [SerializeField]
@@ -32,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
     [Range(15f, 75f)]
     private float maxYRotation = 70f;
 
-    private CharacterController characterController;
+    private Rigidbody rbody;
     private Animator animator;
     private float xAcc = 0f;
     private float yAcc = 0f;
@@ -69,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
     #region monobehaviour fns
     private void Awake()
     {
-        characterController = GetComponent<CharacterController>();
+        rbody = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
         largeMinYRotation = MAX_DEGREE - maxYRotation;
@@ -81,20 +84,18 @@ public class PlayerMovement : MonoBehaviour
         lookTarget.parent = null;
     }
 
-    //move towards the mouse. I haven't connected this to the "keyCtrl". It's not cute, would be better to just turn the head part towards the mouse and not the whole body
-    private void Update()
+    private void FixedUpdate()
     {
         animator.SetFloat("Speed", movementInput.y);
-        // uses and empties mouseDelta to perform character + camera rotations
+
         mouseDelta = Rotations(mouseDelta);
-        if (movementInput.y == 0f) return;
-        float moveSpeedToUse = movementInput.y > 0 ? forwardMoveSpeed : -backwardMoveSpeed;
-        // TODO when we have animations for moving left / right, should also move character in those directions
-        characterController.Move(transform.forward * Time.deltaTime * moveSpeedToUse);
+
+        Movements();
     }
     #endregion
 
     #region private fns
+    // uses and empties mouseDelta to perform character + camera rotations
     private Vector2 Rotations(Vector2 mouseDelta)
     {
         xAcc = Mathf.Lerp(xAcc, mouseDelta.x / rotationLimiter, lookSmoother);
@@ -113,6 +114,34 @@ public class PlayerMovement : MonoBehaviour
         lookTarget.position = transform.position + playerEye.forward * CAMERA_LOOK_DISTANCE;
         playerPhysicalEye.LookAt(lookTarget);
         return Vector2.zero;
+    }
+
+    // only the character is directly moved, uses rigidbody
+    private void Movements()
+    {
+        // drag should be set above 0 or it will slide and we'll need extra logic
+        // for when y == 0f
+        if (movementInput.y == 0f) return;
+        float movespeed;
+        float accel;
+        if (movementInput.y > 0)
+        {
+            accel = acceleration;
+            movespeed = forwardMoveSpeed;
+        }
+        else
+        {
+            accel = -acceleration;
+            movespeed = backwardMoveSpeed;
+        }
+        // TODO when we have animations for moving left / right, should also move character in those directions
+        // alternatively set s/d to turn the character left and right, with mouse controls for the topdown 
+        // camera
+        rbody.AddForce(transform.forward * accel);
+        if (rbody.velocity.sqrMagnitude > movespeed * movespeed)
+        {
+            rbody.velocity = rbody.velocity.normalized * movespeed;
+        }
     }
     #endregion
 }
