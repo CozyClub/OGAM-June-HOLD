@@ -164,12 +164,14 @@ public class PlayerMovement : MonoBehaviour
                     transposeCamTarget.eulerAngles.x,
                     transposeCamTarget.eulerAngles.y + xAcc,
                     transposeCamTarget.eulerAngles.z);
-                if (movementInput.x == 0f && movementInput.y == 0f) break;
-                var lookRot = Quaternion.LookRotation(
-                    new Vector3(movementInput.x, 0f, movementInput.y), transform.up);
-                lookRot *= transposeCamTarget.rotation;
-                transform.rotation = Quaternion.Lerp(transform.rotation,
-                    lookRot, turnSpeed * Time.fixedDeltaTime);
+                if (movementInput.x != 0f || movementInput.y != 0f)
+                {
+                    var lookRot = Quaternion.LookRotation(new Vector3(
+                        movementInput.x, 0f, movementInput.y), transform.up);
+                    lookRot *= transposeCamTarget.rotation;
+                    transform.rotation = Quaternion.Lerp(transform.rotation,
+                        lookRot, turnSpeed * Time.fixedDeltaTime);
+                }
                 CommonRotations(yAcc, out pos, out pos2);
                 lookTarget.position = new Vector3(pos2.x, pos.y, pos2.z);
                 lookTarget.eulerAngles = new Vector3(
