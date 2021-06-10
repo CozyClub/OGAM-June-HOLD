@@ -127,43 +127,59 @@ public class PlayerMovement : MonoBehaviour
     private void DetermineRotationInput(ref float xAcc, ref float yAcc)
     {
         xAcc = Mathf.Lerp(xAcc, mouseDelta.x / rotationLimiter, lookSmoother);
+        yAcc = Mathf.Lerp(yAcc, mouseDelta.y / rotationLimiter, lookSmoother);
+        RotateLocalTransform(xAcc);
+    }
+
+    private void CommonRotations(float yAcc, out Vector3 pos, out Vector3 pos2)
+    {
+        playerEye.eulerAngles = new Vector3(playerEye.eulerAngles.x + -yAcc, 0f, 0f);
+        var localeuler = playerEye.eulerAngles.x;
+        if (localeuler < AVG_DEGREE)
+            localeuler = Mathf.Clamp(
+                localeuler, MIN_DEGREE, maxYRotation);
+        else
+            localeuler = Mathf.Clamp(
+                localeuler, largeMinYRotation, MAX_DEGREE);
+        playerEye.eulerAngles = new Vector3(localeuler,
+            transform.eulerAngles.y, 0f);
+        pos = transform.position + playerEye.forward * CAMERA_LOOK_DISTANCE;
+        pos2 = transform.position + transposeCamTarget.forward * CAMERA_LOOK_DISTANCE;
+    }
+
+    private void RotateLocalTransform(float xAcc)
+    {
+        Vector3 pos, pos2;
         switch (movementInputType)
         {
             case MovementType.MouseRotations:
-                yAcc = Mathf.Lerp(yAcc, mouseDelta.y / rotationLimiter, lookSmoother);
                 transform.eulerAngles = new Vector3(0f, transform.eulerAngles.y + xAcc, 0f);
-                playerEye.eulerAngles = new Vector3(playerEye.eulerAngles.x + -yAcc, 0f, 0f);
-                var localeuler = playerEye.eulerAngles.x;
-                if (localeuler < AVG_DEGREE)
-                    localeuler = Mathf.Clamp(
-                        localeuler, MIN_DEGREE, maxYRotation);
-                else
-                    localeuler = Mathf.Clamp(
-                        localeuler, largeMinYRotation, MAX_DEGREE);
-                playerEye.eulerAngles = new Vector3(localeuler,
-                    transform.eulerAngles.y, 0f);
-
-                playerPhysicalEye.LookAt(lookTarget);
+                CommonRotations(yAcc, out pos, out pos2);
+                lookTarget.position = pos;
+                playerPhysicalEye.LookAt(pos);
                 break;
             case MovementType.LRRotations:
+                // this is the camera's orbital transpose follow target
                 transposeCamTarget.eulerAngles = new Vector3(
                     transposeCamTarget.eulerAngles.x,
                     transposeCamTarget.eulerAngles.y + xAcc,
                     transposeCamTarget.eulerAngles.z);
-                if (movementInput.x == 0f && movementInput.y == 0f) return;
+                if (movementInput.x == 0f && movementInput.y == 0f) break;
                 var lookRot = Quaternion.LookRotation(
                     new Vector3(movementInput.x, 0f, movementInput.y), transform.up);
                 lookRot *= transposeCamTarget.rotation;
                 transform.rotation = Quaternion.Lerp(transform.rotation,
                     lookRot, turnSpeed * Time.fixedDeltaTime);
-                lookTarget.position = transform.position + transform.forward * CAMERA_LOOK_DISTANCE;
+                CommonRotations(yAcc, out pos, out pos2);
+                lookTarget.position = new Vector3(pos2.x, pos.y, pos2.z);
+                lookTarget.eulerAngles = new Vector3(
+                    playerPhysicalEye.eulerAngles.x, 
+                    transposeCamTarget.eulerAngles.y, 
+                    0f);
                 break;
             default:
                 throw new NotImplementedException();
         }
-
-        
-
     }
 
     // only the character is directly moved, uses rigidbody
@@ -182,7 +198,6 @@ public class PlayerMovement : MonoBehaviour
         {
             rbody.velocity = rbody.velocity.normalized * movespeed;
         }
-        lookTarget.position = transform.position + playerEye.forward * CAMERA_LOOK_DISTANCE;
         transposeCamTarget.position = transform.position;
     }
 
