@@ -138,6 +138,7 @@ public class PhotoCamera : MonoBehaviour
         yield return new WaitForSeconds(4);
 
         CloseCamera();
+        photo.SetActive(false);
         Destroy(image);
 
         yield return null;
