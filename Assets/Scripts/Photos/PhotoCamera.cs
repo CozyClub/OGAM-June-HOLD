@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Camera))]
+[RequireComponent(typeof(CinemachineVirtualCamera))]
 public class PhotoCamera : MonoBehaviour
 {
     public int photoMaxPerDay = 10; // low default num for testing
@@ -22,6 +25,7 @@ public class PhotoCamera : MonoBehaviour
     //This is just to see what you're aiming at when taking a picture
     public GameObject photoFrame;
     private Camera Camera;
+    private CinemachineVirtualCamera cineCamera;
 
     public string PhotoDirectoryPath => GetPhotoDirectoryPath();
 
@@ -31,6 +35,7 @@ public class PhotoCamera : MonoBehaviour
 
         photo.SetActive(false);
         Camera = GetComponent<Camera>();
+        cineCamera = GetComponent<CinemachineVirtualCamera>();
         photoFrame.SetActive(false);
 
         SetupPhotoDirectory();
@@ -43,6 +48,7 @@ public class PhotoCamera : MonoBehaviour
         if (Time.timeScale == 0f || photoFrame.activeSelf) return;
 
         photoFrame.SetActive(true);
+        cineCamera.Priority = 1000;
     }
 
     public void CloseCamera()
@@ -50,6 +56,7 @@ public class PhotoCamera : MonoBehaviour
         if (Time.timeScale == 0f) return;
 
         photoFrame.SetActive(false);
+        cineCamera.Priority = 5;
     }
 
     public void TakePicture()
@@ -73,6 +80,8 @@ public class PhotoCamera : MonoBehaviour
         if (PhotoCollectionDTO.GetPhotoCount() >= photoMaxPerDay)
         {
             Debug.LogWarning("Max photos taken, returning.");
+            // closing camera for now?
+            CloseCamera();
             return;
         }
 
@@ -123,7 +132,7 @@ public class PhotoCamera : MonoBehaviour
 
         yield return new WaitForSeconds(4);
 
-        photo.SetActive(false);
+        CloseCamera();
         Destroy(image);
 
         yield return null;
