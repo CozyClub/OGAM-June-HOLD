@@ -10,6 +10,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(CinemachineVirtualCamera))]
 public class PhotoCamera : MonoBehaviour
 {
+    public PlayerMovement playerRef;
+
     public int photoMaxPerDay = 10; // low default num for testing
 
     /// <summary>
@@ -17,6 +19,7 @@ public class PhotoCamera : MonoBehaviour
     /// </summary>
     public readonly string defaultPhotoDirectoryPath = "/SavedPhotos/";
     public PhotoFileFormat defaultPhotoFileFormat = PhotoFileFormat.PNG;
+
 
     Texture2D image;
     public RawImage photoDisplay;
@@ -49,6 +52,7 @@ public class PhotoCamera : MonoBehaviour
 
         photoFrame.SetActive(true);
         cineCamera.Priority = 1000;
+        playerRef.MovementMode = PlayerMovement.MovementType.MouseRotations;
     }
 
     public void CloseCamera()
@@ -57,6 +61,7 @@ public class PhotoCamera : MonoBehaviour
 
         photoFrame.SetActive(false);
         cineCamera.Priority = 5;
+        playerRef.MovementMode = PlayerMovement.MovementType.LRRotations;
     }
 
     public void TakePicture()

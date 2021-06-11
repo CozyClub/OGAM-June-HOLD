@@ -53,6 +53,12 @@ public class PlayerMovement : MonoBehaviour
     [Range(15f, 75f)]
     private float maxYRotation = 70f;
 
+    public MovementType MovementMode 
+    { 
+        get { return movementInputType; } 
+        set { movementInputType = value; } 
+    }
+
     private Rigidbody rbody;
     private Animator animator;
     private float xAcc = 0f;
@@ -189,52 +195,51 @@ public class PlayerMovement : MonoBehaviour
     {
         // drag should be set above 0 or it will slide and we'll need extra logic
         // for when y == 0f
-        DetermineMovementInput(movementInput, out var movespeed, out var accel);
-        animator.SetFloat("Speed", movespeed);
-        if (movespeed == 0f) return;
+        DetermineMovementInput(movementInput, out var maxSpeed, out var accel, out var horizAccel);
+        // always a frame late
+        animator.SetFloat("Speed", maxSpeed);
+        if (maxSpeed == 0f) return;
         // TODO when we have animations for moving left / right, should also move character in those directions
         // alternatively set s/d to turn the character left and right, with mouse controls for the topdown 
         // camera
         rbody.AddForce(transform.forward * accel);
-        if (rbody.velocity.sqrMagnitude > movespeed * movespeed)
+        rbody.AddForce(transform.right * horizAccel);
+        if (rbody.velocity.sqrMagnitude > maxSpeed * maxSpeed)
         {
-            rbody.velocity = rbody.velocity.normalized * movespeed;
+            rbody.velocity = rbody.velocity.normalized * maxSpeed;
         }
         transposeCamTarget.position = transform.position;
     }
 
-    private void DetermineMovementInput(Vector2 movementInput, out float movespeed, out float accel)
+    private void DetermineMovementInput(Vector2 movementInput, out float maxSpeed, out float accel, out float horizAccel)
     {
         switch (movementInputType)
         {
             case MovementType.MouseRotations:
-                if (movementInput.y > 0f)
+                maxSpeed = forwardMoveSpeed;
+                if (movementInput.y < 0f)
                 {
-                    movespeed = forwardMoveSpeed;
-                    accel = acceleration;
+                    maxSpeed = backwardMoveSpeed;
                 }
-                else if (movementInput.y < 0f)
+                else if (movementInput == Vector2.zero)
                 {
-                    movespeed = backwardMoveSpeed;
-                    accel = -acceleration;
+                    maxSpeed = 0f;
                 }
-                else
-                {
-                    accel = acceleration;
-                    movespeed = 0f;
-                }
+                accel = acceleration * movementInput.y;
+                horizAccel = acceleration * movementInput.x;
                 break;
             // want the highest possible value, whether it's the actual magnitude or the x / y
             // we're always moving forward
             case MovementType.LRRotations:
                 if (movementInput.x == 0f && movementInput.y == 0f)
                 {
-                    movespeed = 0f;
+                    maxSpeed = 0f;
                 }
                 else
                 {
-                    movespeed = movementInput.magnitude;
+                    maxSpeed = forwardMoveSpeed;
                 }
+                horizAccel = 0f;
                 accel = acceleration;
                 break;
             default:
