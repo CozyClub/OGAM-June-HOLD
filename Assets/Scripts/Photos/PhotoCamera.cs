@@ -6,11 +6,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Camera))]
 [RequireComponent(typeof(CinemachineVirtualCamera))]
 public class PhotoCamera : MonoBehaviour
 {
     public PlayerMovement playerRef;
+    public RenderTexture photoTexture;
 
     public int photoMaxPerDay = 10; // low default num for testing
 
@@ -27,7 +27,8 @@ public class PhotoCamera : MonoBehaviour
 
     //This is just to see what you're aiming at when taking a picture
     public GameObject photoFrame;
-    private Camera Camera;
+
+    private CinemachineBrain cameraBrain;
     private CinemachineVirtualCamera cineCamera;
 
     public string PhotoDirectoryPath => GetPhotoDirectoryPath();
@@ -37,10 +38,9 @@ public class PhotoCamera : MonoBehaviour
         photo = photoDisplay.gameObject.transform.parent.gameObject;
 
         photo.SetActive(false);
-        Camera = GetComponent<Camera>();
         cineCamera = GetComponent<CinemachineVirtualCamera>();
+        cameraBrain = FindObjectOfType<CinemachineBrain>();
         photoFrame.SetActive(false);
-
         SetupPhotoDirectory();
         PhotoCollectionDTO.LoadData();
     }
@@ -91,12 +91,13 @@ public class PhotoCamera : MonoBehaviour
         }
 
         RenderTexture myRenderTexture = RenderTexture.active;
-        RenderTexture.active = Camera.targetTexture;
-        Camera.Render();
+        cameraBrain.OutputCamera.targetTexture = photoTexture;
+        RenderTexture.active = cameraBrain.OutputCamera.targetTexture;
+        cameraBrain.OutputCamera.Render();
 
         // Create new texture to width and height of photo camera.
-        image = new Texture2D(Camera.targetTexture.width, Camera.targetTexture.height);
-        image.ReadPixels(new Rect(0, 0, Camera.targetTexture.width, Camera.targetTexture.height), 0, 0);
+        image = new Texture2D(cameraBrain.OutputCamera.targetTexture.width, cameraBrain.OutputCamera.targetTexture.height);
+        image.ReadPixels(new Rect(0, 0, cameraBrain.OutputCamera.targetTexture.width, cameraBrain.OutputCamera.targetTexture.height), 0, 0);
         image.Apply();
         RenderTexture.active = myRenderTexture;
 
@@ -104,12 +105,12 @@ public class PhotoCamera : MonoBehaviour
         PhotoDTO photo = new PhotoDTO(bytes, defaultPhotoFileFormat);
 
         IEnumerable<Capturable> capturables = GameObject.FindObjectsOfType<Capturable>();
-        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera);
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(cameraBrain.OutputCamera);
 
         // We should create some kind of priority to grab like max 10 capturables - attempting to sort by distance from camera
         capturables = capturables.OrderBy(x => x.transform.position.z);
         IList<Plane> orderedPlanes = planes.OrderBy(x => x.distance).ToList();
-
+        cameraBrain.OutputCamera.targetTexture = null;
         foreach (Capturable capturable in capturables)
         {
             if(capturable.IsVisibleOnCameraPlanes(orderedPlanes))
