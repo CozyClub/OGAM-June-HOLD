@@ -249,8 +249,8 @@ MonoBehaviour:
   playerPhysicalEye: {fileID: 5759503995014007430}
   lookTarget: {fileID: 2597508726116002119}
   transposeCamTarget: {fileID: 70525323}
-  lookSmoother: 0.2
-  rotationLimiter: 12.72
+  lookSmoother: 0.176
+  rotationLimiter: 35.6
   maxYRotation: 49.7
 --- !u!114 &61758232265306392
 MonoBehaviour:

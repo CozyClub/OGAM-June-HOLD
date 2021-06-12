@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
     [Range(0.1f, 0.99f)]
     private float lookSmoother = 0.2f;
     [SerializeField]
-    [Range(1f, 20f)]
+    [Range(1f, 100f)]
     private float rotationLimiter = 4f;
     [SerializeField]
     [Range(15f, 75f)]
