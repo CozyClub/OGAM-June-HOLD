@@ -9,6 +9,7 @@ class PhotoAlbum : MonoBehaviour
     static GameObject album;
     public RawImage albumPhoto, albumPhoto1, albumPhoto2, albumPhoto3;
     public Button exitAlbumButton, nextPageButton, backPageButton;
+    public PhotoCamera photoCamera;
     private int currentPage;
     private int pageSize;
 
@@ -66,7 +67,7 @@ class PhotoAlbum : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        PhotoCamera.FinishCamera();
+        photoCamera.FinishCamera();
     }
 
     private void NextPageOnClick()

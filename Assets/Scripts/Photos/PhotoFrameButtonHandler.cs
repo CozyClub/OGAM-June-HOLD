@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class PhotoFrameButtonHandler : MonoBehaviour
@@ -28,7 +25,7 @@ public class PhotoFrameButtonHandler : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        PhotoCamera.FinishCamera();
+        album.GetComponent<PhotoAlbum>().photoCamera.FinishCamera();
     }
 
     void DiscardOnClick()
@@ -37,7 +34,7 @@ public class PhotoFrameButtonHandler : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        PhotoCamera.FinishCamera();
+        album.GetComponent<PhotoAlbum>().photoCamera.FinishCamera();
     }
 
     void ViewAlbumOnClick()

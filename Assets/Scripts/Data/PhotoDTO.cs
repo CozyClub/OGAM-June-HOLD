@@ -9,23 +9,20 @@ public class PhotoDTO
     {
         Id = Guid.NewGuid();
         PhotoData = new byte[0];
-        PhotoFileFormat = null;
         UtcTimeStamp = DateTime.UtcNow;
         MainIdentifiableObjects = new List<CapturableDTO>();
     }
 
-    public PhotoDTO(byte[] photoData, PhotoFileFormat photoFileFormat)
+    public PhotoDTO(byte[] photoData)
     {
         Id = Guid.NewGuid();
         PhotoData = photoData;
-        PhotoFileFormat = photoFileFormat;
         UtcTimeStamp = DateTime.UtcNow;
         MainIdentifiableObjects = new List<CapturableDTO>();
     }
 
     public Guid Id;
     public byte[] PhotoData;
-    PhotoFileFormat? PhotoFileFormat;
     public DateTime UtcTimeStamp;
     IList<CapturableDTO> MainIdentifiableObjects;
 
