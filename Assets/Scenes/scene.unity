@@ -1078,14 +1078,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
-    - target: {fileID: 8769096929312837162, guid: 0664cd6d47b955247a1d141bbb955135, type: 3}
-      propertyPath: field of view
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 8769096929312837162, guid: 0664cd6d47b955247a1d141bbb955135, type: 3}
-      propertyPath: near clip plane
-      value: 0.25
-      objectReference: {fileID: 0}
     - target: {fileID: 8769096929312837163, guid: 0664cd6d47b955247a1d141bbb955135, type: 3}
       propertyPath: m_RootOrder
       value: 1

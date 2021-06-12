@@ -27,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8769096929312837159}
-  m_LocalRotation: {x: 0.027154988, y: -0.03230817, z: 0.0008781105, w: 0.9991087}
+  m_LocalRotation: {x: 0.027157256, y: -0.032305956, z: 0.0008781237, w: 0.9991087}
   m_LocalPosition: {x: 20.048462, y: 1.7987047, z: 43.38668}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 22.352, y: 161.402, z: 2.371}
+  m_LocalEulerAnglesHint: {x: 3.114, y: -3.704, z: 0}
 --- !u!20 &8769096929312837162
 Camera:
   m_ObjectHideFlags: 0
@@ -57,7 +57,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 0.25
   far clip plane: 5000
   field of view: 70
   orthographic: 0
@@ -136,7 +136,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 2
+    m_Time: 1
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
