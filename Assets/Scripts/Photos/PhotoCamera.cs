@@ -1,12 +1,17 @@
-﻿using System.Collections;
+﻿using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(CinemachineVirtualCamera))]
 public class PhotoCamera : MonoBehaviour
 {
+    public PlayerMovement playerRef;
+    public RenderTexture photoTexture;
+
     public int photoMaxPerDay = 10; // low default num for testing
 
     /// <summary>
@@ -15,18 +20,16 @@ public class PhotoCamera : MonoBehaviour
     public readonly string defaultPhotoDirectoryPath = "/SavedPhotos/";
     public PhotoFileFormat defaultPhotoFileFormat = PhotoFileFormat.PNG;
 
-    KeyCode StartPhotoModeKey = KeyCode.Space;
-    KeyCode TakePhotoKey = KeyCode.Mouse0;
-    KeyCode ExitPhotoModeKey = KeyCode.Mouse1;
 
     Texture2D image;
-    KeyCtrl keys;
     public RawImage photoDisplay;
     GameObject photo;
 
     //This is just to see what you're aiming at when taking a picture
     public GameObject photoFrame;
-    private Camera Camera;
+
+    private CinemachineBrain cameraBrain;
+    private CinemachineVirtualCamera cineCamera;
 
     public string PhotoDirectoryPath => GetPhotoDirectoryPath();
 
@@ -34,51 +37,40 @@ public class PhotoCamera : MonoBehaviour
     {
         photo = photoDisplay.gameObject.transform.parent.gameObject;
 
-        keys = KeyCtrl.keyctrl;
-        StartPhotoModeKey = keys.startPhotoModeKey.key;
-        TakePhotoKey = keys.takePhotoKey.key;
-        ExitPhotoModeKey = keys.exitPhotoModeKey.key;
-
         photo.SetActive(false);
-        Camera = GetComponent<Camera>();
+        cineCamera = GetComponent<CinemachineVirtualCamera>();
+        cameraBrain = FindObjectOfType<CinemachineBrain>();
         photoFrame.SetActive(false);
-
         SetupPhotoDirectory();
         PhotoCollectionDTO.LoadData();
     }
 
-    private void LateUpdate()
+    #region input controlled functions
+    public void OpenCamera()
     {
-        this.EvaluateCameraControls();
+        if (Time.timeScale == 0f || photoFrame.activeSelf) return;
+
+        photoFrame.SetActive(true);
+        cineCamera.Priority = 1000;
+        playerRef.MovementMode = PlayerMovement.MovementType.MouseRotations;
     }
 
-    private void EvaluateCameraControls()
+    public void CloseCamera()
     {
-        // Show photo frame when StartPhotoModeKey is pressed
-        if (Input.GetKeyDown(StartPhotoModeKey))
-        {
-            if (!photoFrame.activeSelf)
-            {
-                photoFrame.SetActive(true);
-            }
-        }
+        if (Time.timeScale == 0f) return;
 
-        if (photoFrame.activeSelf)
-        {
-            // Release PhotoKey to take picture
-            if (Input.GetKeyDown(TakePhotoKey))
-            {
-                Capture();
-            }
-
-            // Exit photo frame if PhotoKeyCancel is pressed
-            if (Input.GetKeyDown(ExitPhotoModeKey))
-            {
-                Debug.Log("Exiting photo frame");
-                photoFrame.SetActive(false);
-            }
-        }
+        photoFrame.SetActive(false);
+        cineCamera.Priority = 5;
+        playerRef.MovementMode = PlayerMovement.MovementType.LRRotations;
     }
+
+    public void TakePicture()
+    {
+        if (Time.timeScale == 0f || !photoFrame.activeSelf) return;
+
+        Capture();
+    }
+    #endregion
 
     /// <summary>
     /// Performs photo capture and save.
@@ -93,16 +85,19 @@ public class PhotoCamera : MonoBehaviour
         if (PhotoCollectionDTO.GetPhotoCount() >= photoMaxPerDay)
         {
             Debug.LogWarning("Max photos taken, returning.");
+            // closing camera for now?
+            CloseCamera();
             return;
         }
 
         RenderTexture myRenderTexture = RenderTexture.active;
-        RenderTexture.active = Camera.targetTexture;
-        Camera.Render();
+        cameraBrain.OutputCamera.targetTexture = photoTexture;
+        RenderTexture.active = cameraBrain.OutputCamera.targetTexture;
+        cameraBrain.OutputCamera.Render();
 
         // Create new texture to width and height of photo camera.
-        image = new Texture2D(Camera.targetTexture.width, Camera.targetTexture.height);
-        image.ReadPixels(new Rect(0, 0, Camera.targetTexture.width, Camera.targetTexture.height), 0, 0);
+        image = new Texture2D(cameraBrain.OutputCamera.targetTexture.width, cameraBrain.OutputCamera.targetTexture.height);
+        image.ReadPixels(new Rect(0, 0, cameraBrain.OutputCamera.targetTexture.width, cameraBrain.OutputCamera.targetTexture.height), 0, 0);
         image.Apply();
         RenderTexture.active = myRenderTexture;
 
@@ -110,12 +105,12 @@ public class PhotoCamera : MonoBehaviour
         PhotoDTO photo = new PhotoDTO(bytes, defaultPhotoFileFormat);
 
         IEnumerable<Capturable> capturables = GameObject.FindObjectsOfType<Capturable>();
-        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera);
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(cameraBrain.OutputCamera);
 
         // We should create some kind of priority to grab like max 10 capturables - attempting to sort by distance from camera
         capturables = capturables.OrderBy(x => x.transform.position.z);
         IList<Plane> orderedPlanes = planes.OrderBy(x => x.distance).ToList();
-
+        cameraBrain.OutputCamera.targetTexture = null;
         foreach (Capturable capturable in capturables)
         {
             if(capturable.IsVisibleOnCameraPlanes(orderedPlanes))
@@ -143,6 +138,7 @@ public class PhotoCamera : MonoBehaviour
 
         yield return new WaitForSeconds(4);
 
+        CloseCamera();
         photo.SetActive(false);
         Destroy(image);
 
