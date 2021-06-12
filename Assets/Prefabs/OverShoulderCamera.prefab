@@ -10,8 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 561583803787145789}
   - component: {fileID: 561583803787145788}
-  - component: {fileID: 561583803787145791}
-  - component: {fileID: 1078607282}
+  - component: {fileID: 1160695159}
   m_Layer: 0
   m_Name: OverShoulderCamera
   m_TagString: Untagged
@@ -69,22 +68,7 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 561583803992984143}
---- !u!114 &561583803787145791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 561583803787145790}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44d70cc20219cd84593f67d248eafe36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Offset: {x: 0.4, y: 0.2, z: 0}
-  m_ApplyAfter: 3
-  m_PreserveComposition: 0
---- !u!114 &1078607282
+--- !u!114 &1160695159
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -93,14 +77,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 561583803787145790}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 729aad4491e915a41bda2b8325cf757a, type: 3}
+  m_Script: {fileID: 11500000, guid: 449ef5ebbe24720439ec31d15f7b6f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_FocusTracksTarget: 0
-  m_FocusTracking: 1
+  m_FocusTracking: 2
   m_FocusTarget: {fileID: 0}
   m_FocusOffset: 0
-  m_Profile: {fileID: 11400000, guid: 9117adc908a4bb54a9930b24049c506c, type: 2}
+  m_Profile: {fileID: 11400000, guid: f6fe2c36e3f1c2943a378aacec77456a, type: 2}
 --- !u!1 &561583803992984142
 GameObject:
   m_ObjectHideFlags: 0
