@@ -49,7 +49,7 @@ class PhotoAlbum : MonoBehaviour
     private void ExitAlbumOnClick()
     {
         gameObject.SetActive(false);
-        photoCamera.FinishCamera();
+        photoCamera.CloseCamera();
     }
 
     private void NextPageOnClick()

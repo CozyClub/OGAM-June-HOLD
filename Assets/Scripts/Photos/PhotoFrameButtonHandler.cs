@@ -26,13 +26,13 @@ public class PhotoFrameButtonHandler : MonoBehaviour
         PhotoCollectionDTO.AddPhoto(image);
         PhotoCollectionDTO.SaveData();
 
-        album.GetComponent<PhotoAlbum>().photoCamera.FinishCamera();
+        album.GetComponent<PhotoAlbum>().photoCamera.CloseCamera();
     }
 
     void DiscardOnClick()
     {
         // TODO add confirmation prompt
-        album.GetComponent<PhotoAlbum>().photoCamera.FinishCamera();
+        album.GetComponent<PhotoAlbum>().photoCamera.CloseCamera();
     }
 
     void ViewAlbumOnClick()

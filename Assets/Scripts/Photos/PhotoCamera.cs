@@ -130,11 +130,6 @@ public class PhotoCamera : MonoBehaviour
         photo.SetActive(true);
     }
 
-    public void FinishCamera()
-    {
-        CloseCamera();
-    }
-
     public void CloseCamera()
     {
         TimeManager.UnpauseGame();
