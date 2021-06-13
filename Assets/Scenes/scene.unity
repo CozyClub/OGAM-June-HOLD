@@ -472,18 +472,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PhotoCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 5259249554029066648, guid: 50604fd3550268740afdaf059ad232bc, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5259249554029066652, guid: 50604fd3550268740afdaf059ad232bc, type: 3}
       propertyPath: photoCamera
       value: 
       objectReference: {fileID: 2039792601}
-    - target: {fileID: 5259249554726704263, guid: 50604fd3550268740afdaf059ad232bc, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50604fd3550268740afdaf059ad232bc, type: 3}
 --- !u!1 &653260035
