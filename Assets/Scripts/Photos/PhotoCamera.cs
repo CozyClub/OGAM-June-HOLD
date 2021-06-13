@@ -82,8 +82,6 @@ public class PhotoCamera : MonoBehaviour
     {
         // Deactivates photo frame used for previewing photo before capture.
         photoFrame.SetActive(false);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
 
         // Disallows photo capture if current photo count exceeds max.
         // To do - give warning that max photos have been taken.
@@ -132,6 +130,9 @@ public class PhotoCamera : MonoBehaviour
 
     void DisplayPhotoPreview()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         // Display photo in frame
         photoDisplay.texture = image;
         photo.SetActive(true);
@@ -140,6 +141,10 @@ public class PhotoCamera : MonoBehaviour
     public void FinishCamera()
     {
         CloseCamera();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         photo.SetActive(false);
         Destroy(image);
     }

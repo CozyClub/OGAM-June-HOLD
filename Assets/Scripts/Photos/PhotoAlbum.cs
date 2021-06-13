@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 class PhotoAlbum : MonoBehaviour
 {
-    static GameObject album;
     public RawImage albumPhoto, albumPhoto1, albumPhoto2, albumPhoto3;
     public Button exitAlbumButton, nextPageButton, backPageButton;
     public PhotoCamera photoCamera;
@@ -22,8 +20,6 @@ class PhotoAlbum : MonoBehaviour
         nextPageButton.onClick.AddListener(NextPageOnClick);
         backPageButton.onClick.AddListener(BackPageOnClick);
         backPageButton.gameObject.SetActive(false);
-
-        album = albumPhoto1.gameObject.transform.parent.gameObject;
 
         LoadAlbumPage();
     }
@@ -63,10 +59,7 @@ class PhotoAlbum : MonoBehaviour
 
     private void ExitAlbumOnClick()
     {
-        album.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
+        gameObject.SetActive(false);
         photoCamera.FinishCamera();
     }
 

@@ -4,9 +4,12 @@ using UnityEngine.UI;
 public class PhotoFrameButtonHandler : MonoBehaviour
 {
     //Make sure to attach these Buttons in the Inspector
-    public Button keepButton, discardButton, viewAlbumButton;
-    public GameObject album;
+    public Button keepButton, discardButton;
     public GameObject photoFrame;
+
+    // TODO remove album button used for testing
+    public Button viewAlbumButton;
+    public GameObject album;
 
     void Start()
     {
@@ -31,8 +34,7 @@ public class PhotoFrameButtonHandler : MonoBehaviour
     void DiscardOnClick()
     {
         // TODO add confirmation prompt
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+
 
         album.GetComponent<PhotoAlbum>().photoCamera.FinishCamera();
     }

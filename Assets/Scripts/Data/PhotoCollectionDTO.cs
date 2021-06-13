@@ -58,7 +58,7 @@ public class PhotoCollectionDTO
 
     public static IDictionary<Guid, PhotoDTO> LoadData()
     {
-        Dictionary<Guid, PhotoDTO> photosFromSave = null;
+        Dictionary<Guid, PhotoDTO> photosFromSave = new Dictionary<Guid, PhotoDTO>();
         if (File.Exists(collectionPath))
         {
             using (FileStream fs = File.OpenRead(collectionPath))
