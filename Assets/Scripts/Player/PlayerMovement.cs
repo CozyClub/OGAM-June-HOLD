@@ -56,7 +56,15 @@ public class PlayerMovement : MonoBehaviour
     public MovementType MovementMode 
     { 
         get { return movementInputType; } 
-        set { movementInputType = value; } 
+        set 
+        { 
+            movementInputType = value; 
+            // reset eye rotation on movement mode swap
+            playerEye.localEulerAngles = new Vector3(
+                0f,
+                playerEye.localEulerAngles.y,
+                playerEye.localEulerAngles.z);
+        } 
     }
 
     private Rigidbody rbody;
@@ -181,8 +189,8 @@ public class PlayerMovement : MonoBehaviour
                 CommonRotations(yAcc, out pos, out pos2);
                 lookTarget.position = new Vector3(pos2.x, pos.y, pos2.z);
                 lookTarget.eulerAngles = new Vector3(
-                    playerPhysicalEye.eulerAngles.x, 
-                    transposeCamTarget.eulerAngles.y, 
+                    playerPhysicalEye.eulerAngles.x,
+                    transposeCamTarget.eulerAngles.y,
                     0f);
                 break;
             default:
