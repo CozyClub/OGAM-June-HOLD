@@ -25,8 +25,6 @@ public class PhotoFrameButtonHandler : MonoBehaviour
         // Adding photo collection and saving. SaveData() saves the whole collection so we should probably move this out somewhere else.
         PhotoCollectionDTO.AddPhoto(image);
         PhotoCollectionDTO.SaveData();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
 
         album.GetComponent<PhotoAlbum>().photoCamera.FinishCamera();
     }
@@ -34,8 +32,6 @@ public class PhotoFrameButtonHandler : MonoBehaviour
     void DiscardOnClick()
     {
         // TODO add confirmation prompt
-
-
         album.GetComponent<PhotoAlbum>().photoCamera.FinishCamera();
     }
 
