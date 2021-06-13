@@ -10,7 +10,7 @@ public class PhotoCamera : MonoBehaviour
     public PlayerMovement playerRef;
     public RenderTexture photoTexture;
 
-    public int photoMaxPerDay = 10; // low default num for testing
+    int photoMaxPerDay = 12;
 
     public RawImage photoDisplay;
 
@@ -51,25 +51,16 @@ public class PhotoCamera : MonoBehaviour
     #region input controlled functions
     public void OpenCamera()
     {
-        if (Time.timeScale == 0f || photoFrame.activeSelf) return;
+        if (TimeManager.IsGamePaused || photoFrame.activeSelf) return;
 
         photoFrame.SetActive(true);
         cineCamera.Priority = 1000;
         playerRef.MovementMode = PlayerMovement.MovementType.MouseRotations;
     }
 
-    public void CloseCamera()
-    {
-        if (Time.timeScale == 0f) return;
-
-        photoFrame.SetActive(false);
-        cineCamera.Priority = 5;
-        playerRef.MovementMode = PlayerMovement.MovementType.LRRotations;
-    }
-
     public void TakePicture()
     {
-        if (Time.timeScale == 0f || !photoFrame.activeSelf) return;
+        if (TimeManager.IsGamePaused || !photoFrame.activeSelf) return;
 
         RenderCapture();
     }
@@ -78,7 +69,7 @@ public class PhotoCamera : MonoBehaviour
     /// <summary>
     /// Performs photo capture and save.
     /// </summary>
-    public void RenderCapture()
+    void RenderCapture()
     {
         // Deactivates photo frame used for previewing photo before capture.
         photoFrame.SetActive(false);
@@ -130,6 +121,7 @@ public class PhotoCamera : MonoBehaviour
 
     void DisplayPhotoPreview()
     {
+        TimeManager.PauseGame();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
@@ -141,11 +133,20 @@ public class PhotoCamera : MonoBehaviour
     public void FinishCamera()
     {
         CloseCamera();
+    }
+
+    public void CloseCamera()
+    {
+        TimeManager.UnpauseGame();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         photo.SetActive(false);
         Destroy(image);
+
+        photoFrame.SetActive(false);
+        cineCamera.Priority = 5;
+        playerRef.MovementMode = PlayerMovement.MovementType.LRRotations;
     }
 }

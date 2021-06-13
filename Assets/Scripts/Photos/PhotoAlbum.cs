@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 class PhotoAlbum : MonoBehaviour
 {
-    public RawImage albumPhoto, albumPhoto1, albumPhoto2, albumPhoto3;
     public Button exitAlbumButton, nextPageButton, backPageButton;
     public PhotoCamera photoCamera;
+
+    // PhotoDisplays for showing images on album page
+    private List<RawImage> albumPhotos;
     private int currentPage;
     private int pageSize;
 
@@ -15,6 +18,8 @@ class PhotoAlbum : MonoBehaviour
     {
         currentPage = 0;
         pageSize = 4;
+
+        albumPhotos = gameObject.GetComponentsInChildren<RawImage>().ToList();
 
         exitAlbumButton.onClick.AddListener(ExitAlbumOnClick);
         nextPageButton.onClick.AddListener(NextPageOnClick);
@@ -28,32 +33,16 @@ class PhotoAlbum : MonoBehaviour
     {
         List<PhotoDTO> photos = PhotoCollectionDTO.PagePhotoCollection(pageSize, skip).ToList();
 
-        if(photos.ElementAt(0) != null)
+        for (int i = 0; i < albumPhotos.Count; ++i)
         {
-            Texture2D tex = new Texture2D((int)albumPhoto.rectTransform.rect.width, (int)albumPhoto.rectTransform.rect.height);
-            tex.LoadImage(photos.ElementAt(0).PhotoData);
-            albumPhoto.texture = tex;
-        }
+            if (photos.ElementAtOrDefault(i) != null)
+            {
+                RawImage albumPhoto = albumPhotos[i];
 
-        if(photos.ElementAt(1) != null)
-        {
-            Texture2D tex1 = new Texture2D((int)albumPhoto1.rectTransform.rect.width, (int)albumPhoto1.rectTransform.rect.height);
-            tex1.LoadImage(photos.ElementAt(1).PhotoData);
-            albumPhoto1.texture = tex1;
-        }
-
-        if (photos.ElementAt(2) != null)
-        {
-            Texture2D tex2 = new Texture2D((int)albumPhoto2.rectTransform.rect.width, (int)albumPhoto2.rectTransform.rect.height);
-            tex2.LoadImage(photos.ElementAt(2).PhotoData);
-            albumPhoto2.texture = tex2;
-        }
-
-        if (photos.ElementAt(3) != null)
-        {
-            Texture2D tex3 = new Texture2D((int)albumPhoto3.rectTransform.rect.width, (int)albumPhoto3.rectTransform.rect.height);
-            tex3.LoadImage(photos.ElementAt(3).PhotoData);
-            albumPhoto3.texture = tex3;
+                Texture2D tex = new Texture2D((int)albumPhoto.rectTransform.rect.width, (int)albumPhoto.rectTransform.rect.height);
+                tex.LoadImage(photos[i].PhotoData);
+                albumPhoto.texture = tex;
+            }
         }
     }
 
@@ -69,12 +58,12 @@ class PhotoAlbum : MonoBehaviour
         int maxPageNeed = photoCount / pageSize; // TODO: check on rounding
         if (currentPage >= maxPageNeed) return;
 
-        if(currentPage < maxPageNeed)
+        if (currentPage < maxPageNeed)
         {
             LoadAlbumPage(currentPage * pageSize);
         }
 
-        if(currentPage == maxPageNeed)
+        if (currentPage == maxPageNeed)
         {
             nextPageButton.gameObject.SetActive(false);
         }
@@ -91,17 +80,17 @@ class PhotoAlbum : MonoBehaviour
     {
         if (currentPage == 0) return;
 
-        if(currentPage <= 2)
+        if (currentPage <= 2)
         {
             LoadAlbumPage((currentPage - 1) * pageSize);
         }
 
-        if(currentPage == 1)
+        if (currentPage == 1)
         {
             backPageButton.gameObject.SetActive(false);
         }
 
-        if(currentPage == 2)
+        if (currentPage == 2)
         {
             nextPageButton.gameObject.SetActive(true);
         }

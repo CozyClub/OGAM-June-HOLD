@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
     #region input controlled functions
     public void GetDeltaInput(InputAction.CallbackContext context)
     {
-        if (Time.timeScale == 0f)
+        if (TimeManager.IsGamePaused)
         {
             mouseDelta = Vector2.zero;
             return;
@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void GetMovementInput(InputAction.CallbackContext context)
     {
-        if (Time.timeScale == 0f)
+        if (TimeManager.IsGamePaused)
         {
             movementInput = Vector2.zero;
             return;
