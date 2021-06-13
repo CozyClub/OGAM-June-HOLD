@@ -48,23 +48,31 @@ public class PlayerMovement : MonoBehaviour
     private float lookSmoother = 0.2f;
     [SerializeField]
     [Range(1f, 100f)]
-    private float rotationLimiter = 4f;
+    private float rotationXLimiter = 4f;
+    [SerializeField]
+    [Range(1f, 100f)]
+    private float rotationYLimiter = 4f;
     [SerializeField]
     [Range(15f, 75f)]
     private float maxYRotation = 70f;
 
-    public MovementType MovementMode 
-    { 
-        get { return movementInputType; } 
-        set 
-        { 
-            movementInputType = value; 
+    public MovementType MovementMode
+    {
+        get { return movementInputType; }
+        set
+        {
+            movementInputType = value;
             // reset eye rotation on movement mode swap
+
             playerEye.localEulerAngles = new Vector3(
                 0f,
                 playerEye.localEulerAngles.y,
                 playerEye.localEulerAngles.z);
-        } 
+            playerPhysicalEye.localEulerAngles = new Vector3(
+                  0f,
+                  playerPhysicalEye.localEulerAngles.z,
+                  playerPhysicalEye.localEulerAngles.z);
+        }
     }
 
     private Rigidbody rbody;
@@ -140,8 +148,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void DetermineRotationInput(ref float xAcc, ref float yAcc)
     {
-        xAcc = Mathf.Lerp(xAcc, mouseDelta.x / rotationLimiter, lookSmoother);
-        yAcc = Mathf.Lerp(yAcc, mouseDelta.y / rotationLimiter, lookSmoother);
+        xAcc = Mathf.Lerp(xAcc, mouseDelta.x / rotationXLimiter, lookSmoother);
+        yAcc = Mathf.Lerp(yAcc, mouseDelta.y / rotationYLimiter, lookSmoother);
         RotateLocalTransform(xAcc);
     }
 

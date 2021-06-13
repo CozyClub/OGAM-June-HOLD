@@ -193,7 +193,8 @@ MonoBehaviour:
   lookTarget: {fileID: 2597508726116002119}
   transposeCamTarget: {fileID: 70525323}
   lookSmoother: 0.176
-  rotationLimiter: 35.6
+  rotationXLimiter: 19.7
+  rotationYLimiter: 50.3
   maxYRotation: 49.7
 --- !u!114 &61758232265306392
 MonoBehaviour:
