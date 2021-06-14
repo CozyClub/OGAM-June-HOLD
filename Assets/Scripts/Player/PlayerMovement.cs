@@ -48,15 +48,31 @@ public class PlayerMovement : MonoBehaviour
     private float lookSmoother = 0.2f;
     [SerializeField]
     [Range(1f, 100f)]
-    private float rotationLimiter = 4f;
+    private float rotationXLimiter = 4f;
+    [SerializeField]
+    [Range(1f, 100f)]
+    private float rotationYLimiter = 4f;
     [SerializeField]
     [Range(15f, 75f)]
     private float maxYRotation = 70f;
 
-    public MovementType MovementMode 
-    { 
-        get { return movementInputType; } 
-        set { movementInputType = value; } 
+    public MovementType MovementMode
+    {
+        get { return movementInputType; }
+        set
+        {
+            movementInputType = value;
+            // reset eye rotation on movement mode swap
+
+            playerEye.localEulerAngles = new Vector3(
+                0f,
+                playerEye.localEulerAngles.y,
+                playerEye.localEulerAngles.z);
+            playerPhysicalEye.localEulerAngles = new Vector3(
+                  0f,
+                  playerPhysicalEye.localEulerAngles.z,
+                  playerPhysicalEye.localEulerAngles.z);
+        }
     }
 
     private Rigidbody rbody;
@@ -72,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
     #region input controlled functions
     public void GetDeltaInput(InputAction.CallbackContext context)
     {
-        if (Time.timeScale == 0f)
+        if (TimeManager.IsGamePaused)
         {
             mouseDelta = Vector2.zero;
             return;
@@ -82,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void GetMovementInput(InputAction.CallbackContext context)
     {
-        if (Time.timeScale == 0f)
+        if (TimeManager.IsGamePaused)
         {
             movementInput = Vector2.zero;
             return;
@@ -132,8 +148,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void DetermineRotationInput(ref float xAcc, ref float yAcc)
     {
-        xAcc = Mathf.Lerp(xAcc, mouseDelta.x / rotationLimiter, lookSmoother);
-        yAcc = Mathf.Lerp(yAcc, mouseDelta.y / rotationLimiter, lookSmoother);
+        xAcc = Mathf.Lerp(xAcc, mouseDelta.x / rotationXLimiter, lookSmoother);
+        yAcc = Mathf.Lerp(yAcc, mouseDelta.y / rotationYLimiter, lookSmoother);
         RotateLocalTransform(xAcc);
     }
 
@@ -181,8 +197,8 @@ public class PlayerMovement : MonoBehaviour
                 CommonRotations(yAcc, out pos, out pos2);
                 lookTarget.position = new Vector3(pos2.x, pos.y, pos2.z);
                 lookTarget.eulerAngles = new Vector3(
-                    playerPhysicalEye.eulerAngles.x, 
-                    transposeCamTarget.eulerAngles.y, 
+                    playerPhysicalEye.eulerAngles.x,
+                    transposeCamTarget.eulerAngles.y,
                     0f);
                 break;
             default:
