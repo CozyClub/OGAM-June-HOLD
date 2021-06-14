@@ -1,7 +1,5 @@
 ﻿using Cinemachine;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,26 +10,30 @@ public class PhotoCamera : MonoBehaviour
     public PlayerMovement playerRef;
     public RenderTexture photoTexture;
 
-    public int photoMaxPerDay = 10; // low default num for testing
+    int photoMaxPerDay = 12;
+
+    public RawImage photoDisplay;
 
     /// <summary>
-    /// Photo directory configuration - can make this configurable in the future
+    /// Photo image game object
     /// </summary>
-    public readonly string defaultPhotoDirectoryPath = "/SavedPhotos/";
-    public PhotoFileFormat defaultPhotoFileFormat = PhotoFileFormat.PNG;
+    static GameObject photo;
+    static Texture2D image;
 
-
-    Texture2D image;
-    public RawImage photoDisplay;
-    GameObject photo;
-
-    //This is just to see what you're aiming at when taking a picture
+    /// <summary>
+    /// The photo frame to show where robot is aiming camera.
+    /// </summary>
     public GameObject photoFrame;
 
     private CinemachineBrain cameraBrain;
     private CinemachineVirtualCamera cineCamera;
 
-    public string PhotoDirectoryPath => GetPhotoDirectoryPath();
+    /// <summary>
+    /// Image data hydrated after photo is taken.
+    /// </summary>
+    public static PhotoDTO imageData;
+
+    public string PhotoDirectoryPath => PhotoCollectionDTO.GetPhotoDirectoryPath();
 
     public void Start()
     {
@@ -41,41 +43,33 @@ public class PhotoCamera : MonoBehaviour
         cineCamera = GetComponent<CinemachineVirtualCamera>();
         cameraBrain = FindObjectOfType<CinemachineBrain>();
         photoFrame.SetActive(false);
-        SetupPhotoDirectory();
+
+        PhotoCollectionDTO.SetupPhotoDirectory();
         PhotoCollectionDTO.LoadData();
     }
 
     #region input controlled functions
     public void OpenCamera()
     {
-        if (Time.timeScale == 0f || photoFrame.activeSelf) return;
+        if (TimeManager.IsGamePaused || photoFrame.activeSelf) return;
 
         photoFrame.SetActive(true);
         cineCamera.Priority = 1000;
         playerRef.MovementMode = PlayerMovement.MovementType.MouseRotations;
     }
 
-    public void CloseCamera()
-    {
-        if (Time.timeScale == 0f) return;
-
-        photoFrame.SetActive(false);
-        cineCamera.Priority = 5;
-        playerRef.MovementMode = PlayerMovement.MovementType.LRRotations;
-    }
-
     public void TakePicture()
     {
-        if (Time.timeScale == 0f || !photoFrame.activeSelf) return;
+        if (TimeManager.IsGamePaused || !photoFrame.activeSelf) return;
 
-        Capture();
+        RenderCapture();
     }
     #endregion
 
     /// <summary>
     /// Performs photo capture and save.
     /// </summary>
-    public void Capture()
+    void RenderCapture()
     {
         // Deactivates photo frame used for previewing photo before capture.
         photoFrame.SetActive(false);
@@ -102,7 +96,8 @@ public class PhotoCamera : MonoBehaviour
         RenderTexture.active = myRenderTexture;
 
         byte[] bytes = image.EncodeToPNG();
-        PhotoDTO photo = new PhotoDTO(bytes, defaultPhotoFileFormat);
+
+        PhotoDTO photoDTO = new PhotoDTO(bytes);
 
         IEnumerable<Capturable> capturables = GameObject.FindObjectsOfType<Capturable>();
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(cameraBrain.OutputCamera);
@@ -113,56 +108,40 @@ public class PhotoCamera : MonoBehaviour
         cameraBrain.OutputCamera.targetTexture = null;
         foreach (Capturable capturable in capturables)
         {
-            if(capturable.IsVisibleOnCameraPlanes(orderedPlanes))
+            if (capturable.IsVisibleOnCameraPlanes(orderedPlanes))
             {
-                photo.AddIdentifiableObject(capturable);
+                photoDTO.AddIdentifiableObject(capturable);
             }
         }
 
-        // Adding photo collection and saving. SaveData() saves the whole collection so we should probably move this out somewhere else.
-        PhotoCollectionDTO.AddPhoto(photo);
-        PhotoCollectionDTO.SaveData();
+        imageData = photoDTO;
+        DisplayPhotoPreview();
 
-        StartCoroutine(this.DisplayPhoto());
     }
 
-    /// <summary>
-    /// Little short preview of the photo taken
-    /// </summary>
-    public IEnumerator DisplayPhoto()
+    void DisplayPhotoPreview()
     {
-        yield return new WaitForSeconds(1);
+        TimeManager.PauseGame();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
+        // Display photo in frame
         photoDisplay.texture = image;
         photo.SetActive(true);
+    }
 
-        yield return new WaitForSeconds(4);
+    public void CloseCamera()
+    {
+        TimeManager.UnpauseGame();
 
-        CloseCamera();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         photo.SetActive(false);
         Destroy(image);
 
-        yield return null;
-    }
-
-    /// <summary>
-    /// Initializes photo path directory if doesn't exist yet.
-    /// </summary>
-    private void SetupPhotoDirectory()
-    {
-        // Set up photo directory
-        string photoDirectoryPath = this.GetPhotoDirectoryPath();
-        Debug.Log("Photo directory path is: " + photoDirectoryPath);
-
-        DirectoryInfo dir = new DirectoryInfo(photoDirectoryPath);
-        if (!dir.Exists)
-        {
-            Directory.CreateDirectory(photoDirectoryPath);
-        }
-    }
-
-    private string GetPhotoDirectoryPath()
-    {
-        return $"{Application.persistentDataPath}{defaultPhotoDirectoryPath}";
+        photoFrame.SetActive(false);
+        cineCamera.Priority = 5;
+        playerRef.MovementMode = PlayerMovement.MovementType.LRRotations;
     }
 }
