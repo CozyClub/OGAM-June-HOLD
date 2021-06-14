@@ -9,8 +9,7 @@ public class PhotoCamera : MonoBehaviour
 {
     public PlayerMovement playerRef;
     public RenderTexture photoTexture;
-
-    int photoMaxPerDay = 12;
+    readonly int photoMaxPerDay = 12;
 
     public RawImage photoDisplay;
 
