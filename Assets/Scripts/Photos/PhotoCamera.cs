@@ -1,89 +1,75 @@
-﻿using System.Collections;
+﻿using Cinemachine;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(CinemachineVirtualCamera))]
 public class PhotoCamera : MonoBehaviour
 {
-    public int photoMaxPerDay = 10; // low default num for testing
+    public PlayerMovement playerRef;
+    public RenderTexture photoTexture;
+
+    int photoMaxPerDay = 12;
+
+    public RawImage photoDisplay;
 
     /// <summary>
-    /// Photo directory configuration - can make this configurable in the future
+    /// Photo image game object
     /// </summary>
-    public readonly string defaultPhotoDirectoryPath = "/SavedPhotos/";
-    public PhotoFileFormat defaultPhotoFileFormat = PhotoFileFormat.PNG;
+    static GameObject photo;
+    static Texture2D image;
 
-    KeyCode StartPhotoModeKey = KeyCode.Space;
-    KeyCode TakePhotoKey = KeyCode.Mouse0;
-    KeyCode ExitPhotoModeKey = KeyCode.Mouse1;
-
-    Texture2D image;
-    KeyCtrl keys;
-    public RawImage photoDisplay;
-    GameObject photo;
-
-    //This is just to see what you're aiming at when taking a picture
+    /// <summary>
+    /// The photo frame to show where robot is aiming camera.
+    /// </summary>
     public GameObject photoFrame;
-    private Camera Camera;
 
-    public string PhotoDirectoryPath => GetPhotoDirectoryPath();
+    private CinemachineBrain cameraBrain;
+    private CinemachineVirtualCamera cineCamera;
+
+    /// <summary>
+    /// Image data hydrated after photo is taken.
+    /// </summary>
+    public static PhotoDTO imageData;
+
+    public string PhotoDirectoryPath => PhotoCollectionDTO.GetPhotoDirectoryPath();
 
     public void Start()
     {
         photo = photoDisplay.gameObject.transform.parent.gameObject;
 
-        keys = KeyCtrl.keyctrl;
-        StartPhotoModeKey = keys.startPhotoModeKey.key;
-        TakePhotoKey = keys.takePhotoKey.key;
-        ExitPhotoModeKey = keys.exitPhotoModeKey.key;
-
         photo.SetActive(false);
-        Camera = GetComponent<Camera>();
+        cineCamera = GetComponent<CinemachineVirtualCamera>();
+        cameraBrain = FindObjectOfType<CinemachineBrain>();
         photoFrame.SetActive(false);
 
-        SetupPhotoDirectory();
+        PhotoCollectionDTO.SetupPhotoDirectory();
         PhotoCollectionDTO.LoadData();
     }
 
-    private void LateUpdate()
+    #region input controlled functions
+    public void OpenCamera()
     {
-        this.EvaluateCameraControls();
+        if (TimeManager.IsGamePaused || photoFrame.activeSelf) return;
+
+        photoFrame.SetActive(true);
+        cineCamera.Priority = 1000;
+        playerRef.MovementMode = PlayerMovement.MovementType.MouseRotations;
     }
 
-    private void EvaluateCameraControls()
+    public void TakePicture()
     {
-        // Show photo frame when StartPhotoModeKey is pressed
-        if (Input.GetKeyDown(StartPhotoModeKey))
-        {
-            if (!photoFrame.activeSelf)
-            {
-                photoFrame.SetActive(true);
-            }
-        }
+        if (TimeManager.IsGamePaused || !photoFrame.activeSelf) return;
 
-        if (photoFrame.activeSelf)
-        {
-            // Release PhotoKey to take picture
-            if (Input.GetKeyDown(TakePhotoKey))
-            {
-                Capture();
-            }
-
-            // Exit photo frame if PhotoKeyCancel is pressed
-            if (Input.GetKeyDown(ExitPhotoModeKey))
-            {
-                Debug.Log("Exiting photo frame");
-                photoFrame.SetActive(false);
-            }
-        }
+        RenderCapture();
     }
+    #endregion
 
     /// <summary>
     /// Performs photo capture and save.
     /// </summary>
-    public void Capture()
+    void RenderCapture()
     {
         // Deactivates photo frame used for previewing photo before capture.
         photoFrame.SetActive(false);
@@ -93,80 +79,69 @@ public class PhotoCamera : MonoBehaviour
         if (PhotoCollectionDTO.GetPhotoCount() >= photoMaxPerDay)
         {
             Debug.LogWarning("Max photos taken, returning.");
+            // closing camera for now?
+            CloseCamera();
             return;
         }
 
         RenderTexture myRenderTexture = RenderTexture.active;
-        RenderTexture.active = Camera.targetTexture;
-        Camera.Render();
+        cameraBrain.OutputCamera.targetTexture = photoTexture;
+        RenderTexture.active = cameraBrain.OutputCamera.targetTexture;
+        cameraBrain.OutputCamera.Render();
 
         // Create new texture to width and height of photo camera.
-        image = new Texture2D(Camera.targetTexture.width, Camera.targetTexture.height);
-        image.ReadPixels(new Rect(0, 0, Camera.targetTexture.width, Camera.targetTexture.height), 0, 0);
+        image = new Texture2D(cameraBrain.OutputCamera.targetTexture.width, cameraBrain.OutputCamera.targetTexture.height);
+        image.ReadPixels(new Rect(0, 0, cameraBrain.OutputCamera.targetTexture.width, cameraBrain.OutputCamera.targetTexture.height), 0, 0);
         image.Apply();
         RenderTexture.active = myRenderTexture;
 
         byte[] bytes = image.EncodeToPNG();
-        PhotoDTO photo = new PhotoDTO(bytes, defaultPhotoFileFormat);
+
+        PhotoDTO photoDTO = new PhotoDTO(bytes);
 
         IEnumerable<Capturable> capturables = GameObject.FindObjectsOfType<Capturable>();
-        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera);
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(cameraBrain.OutputCamera);
 
         // We should create some kind of priority to grab like max 10 capturables - attempting to sort by distance from camera
         capturables = capturables.OrderBy(x => x.transform.position.z);
         IList<Plane> orderedPlanes = planes.OrderBy(x => x.distance).ToList();
-
+        cameraBrain.OutputCamera.targetTexture = null;
         foreach (Capturable capturable in capturables)
         {
-            if(capturable.IsVisibleOnCameraPlanes(orderedPlanes))
+            if (capturable.IsVisibleOnCameraPlanes(orderedPlanes))
             {
-                photo.AddIdentifiableObject(capturable);
+                photoDTO.AddIdentifiableObject(capturable);
             }
         }
 
-        // Adding photo collection and saving. SaveData() saves the whole collection so we should probably move this out somewhere else.
-        PhotoCollectionDTO.AddPhoto(photo);
-        PhotoCollectionDTO.SaveData();
+        imageData = photoDTO;
+        DisplayPhotoPreview();
 
-        StartCoroutine(this.DisplayPhoto());
     }
 
-    /// <summary>
-    /// Little short preview of the photo taken
-    /// </summary>
-    public IEnumerator DisplayPhoto()
+    void DisplayPhotoPreview()
     {
-        yield return new WaitForSeconds(1);
+        TimeManager.PauseGame();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
+        // Display photo in frame
         photoDisplay.texture = image;
         photo.SetActive(true);
+    }
 
-        yield return new WaitForSeconds(4);
+    public void CloseCamera()
+    {
+        TimeManager.UnpauseGame();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         photo.SetActive(false);
         Destroy(image);
 
-        yield return null;
-    }
-
-    /// <summary>
-    /// Initializes photo path directory if doesn't exist yet.
-    /// </summary>
-    private void SetupPhotoDirectory()
-    {
-        // Set up photo directory
-        string photoDirectoryPath = this.GetPhotoDirectoryPath();
-        Debug.Log("Photo directory path is: " + photoDirectoryPath);
-
-        DirectoryInfo dir = new DirectoryInfo(photoDirectoryPath);
-        if (!dir.Exists)
-        {
-            Directory.CreateDirectory(photoDirectoryPath);
-        }
-    }
-
-    private string GetPhotoDirectoryPath()
-    {
-        return $"{Application.persistentDataPath}{defaultPhotoDirectoryPath}";
+        photoFrame.SetActive(false);
+        cineCamera.Priority = 5;
+        playerRef.MovementMode = PlayerMovement.MovementType.LRRotations;
     }
 }
