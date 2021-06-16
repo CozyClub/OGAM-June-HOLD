@@ -1,6 +1,5 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// <summary>
 /// tree/subtree is required to set Repeat to 1+ and needs a single child (like other decorators)
@@ -31,9 +30,9 @@ public class Repeater : ADecorator
         return State;
     }
 
-    protected override void Initialize(Dictionary<string, object> context)
+    protected override void Initialize(Dictionary<string, Tuple<object, int>> context, bool recursiveInit)
     {
-        base.Initialize(context);
-        if (Repeat < 1) throw new System.Exception("Repeat must be set to value 1+");
+        base.Initialize(context, recursiveInit);
+        if (Repeat < 1) throw new Exception("Repeat must be set to value 1+");
     }
 }

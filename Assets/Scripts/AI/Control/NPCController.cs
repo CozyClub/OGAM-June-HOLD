@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class NPCController : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public const string PARENT_KEY = "PARENT";
+    public const string VERSION_KEY = "VERSION";
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         

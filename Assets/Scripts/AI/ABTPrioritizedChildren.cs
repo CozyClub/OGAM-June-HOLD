@@ -29,10 +29,14 @@ public abstract class ABTPrioritizedChildren : ABTNode
     }
 
     // must set children or add to children before calling initialize
-    protected override void Initialize(Dictionary<string, object> context)
+    // recursive init is probably okay generally
+    protected override void Initialize(Dictionary<string, Tuple<object, int>> context, bool recursiveInit)
     {
         if (children.Count < MinCount || children.Count > MaxCount)
             throw new Exception("Any ABTPrioritizedChildren node must have the correct number of children: " +
                 "For this node, between " + MinCount + " and " + MaxCount + ", inclusive");
+        if (!recursiveInit) return;
+        foreach (var kid in children)
+            kid.Value.Init(context);
     }
 }

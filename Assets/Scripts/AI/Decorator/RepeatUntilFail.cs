@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿
 /// <summary>
 /// this is probably too dangerous to every bother using. i'll be using better control methods
 /// through the implementation of NPCController itself, but i'm including this as it may still
