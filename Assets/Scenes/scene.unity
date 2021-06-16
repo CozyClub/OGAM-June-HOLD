@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2138677392}
-  m_IndirectSpecularColor: {r: 0.28502697, g: 0.37139347, b: 0.49601266, a: 1}
+  m_IndirectSpecularColor: {r: 0.2850269, g: 0.3713935, b: 0.49601045, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -248,11 +248,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1203556960b07d34683fcdd98f646dc1, type: 3}
---- !u!4 &285527210 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3952515905464034074, guid: 16d60cc858f06e24797af37b35dca8ec, type: 3}
-  m_PrefabInstance: {fileID: 61758231023067247}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &344785974 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5259249553945957268, guid: 50604fd3550268740afdaf059ad232bc, type: 3}
@@ -1691,14 +1686,6 @@ PrefabInstance:
     - target: {fileID: 61758232265306389, guid: 16d60cc858f06e24797af37b35dca8ec, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 61758232265306391, guid: 16d60cc858f06e24797af37b35dca8ec, type: 3}
-      propertyPath: playerEye
-      value: 
-      objectReference: {fileID: 285527210}
-    - target: {fileID: 61758232265306391, guid: 16d60cc858f06e24797af37b35dca8ec, type: 3}
-      propertyPath: playerPhysicalEye
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 61758232265306392, guid: 16d60cc858f06e24797af37b35dca8ec, type: 3}
       propertyPath: m_Camera
