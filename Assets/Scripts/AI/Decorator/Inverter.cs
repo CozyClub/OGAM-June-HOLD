@@ -1,27 +1,16 @@
-﻿public class Inverter : ABTPrioritizedChildren
+﻿public class Inverter : ADecorator
 {
-    protected override int MaxCount => 1;
-    protected override int MinCount => 1;
-
     public override BTResult Continue()
     {
-        foreach (var child in children.Values)
-        {
-            State = child.Continue();
-            AttemptInversion();
-            break;
-        }
+        State = Child.Continue();
+        AttemptInversion();
         return State;
     }
 
     public override BTResult Start()
     {
-        foreach (var child in children.Values)
-        {
-            State = child.Start();
-            AttemptInversion();
-            break;
-        }
+        State = Child.Start();
+        AttemptInversion();
         return State;
     }
 

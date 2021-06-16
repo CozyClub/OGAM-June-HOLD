@@ -2,17 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Succeeder : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
+public class Succeeder : ADecorator
+{ 
+    public override BTResult Continue()
     {
-        
+        State = Child.Continue();
+        AttemptSucceed();
+        return State;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override BTResult Start()
     {
-        
+        State = Child.Start();
+        AttemptSucceed();
+        return State;
+    }
+
+    protected void AttemptSucceed()
+    {
+        if (State == BTResult.FAILURE) State = BTResult.SUCCESS;
     }
 }
