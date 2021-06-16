@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 
 public abstract class AComposite : ABTPrioritizedChildren
 {
@@ -35,5 +35,11 @@ public abstract class AComposite : ABTPrioritizedChildren
             if (State != CONTINUE_ITERATION_STATE) return State;
         }
         return State;
+    }
+
+    protected override void Initialize(Dictionary<string, Tuple<object, int>> context, bool recursiveInit)
+    {
+        base.Initialize(context, recursiveInit);
+        runningChild = children.First();
     }
 }
