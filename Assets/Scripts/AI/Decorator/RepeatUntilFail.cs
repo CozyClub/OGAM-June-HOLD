@@ -9,7 +9,7 @@
 /// </summary>
 public class RepeatUntilFail : ADecorator
 {
-    public override BTResult Continue()
+    public override sealed BTResult Continue()
     {
         State = BTResult.RUNNING;
         while (State != BTResult.FAILURE)
@@ -19,7 +19,7 @@ public class RepeatUntilFail : ADecorator
         return State;
     }
 
-    public override BTResult Start()
+    public override sealed BTResult Start()
     {
         State = Child.Start();
         while (State != BTResult.FAILURE)

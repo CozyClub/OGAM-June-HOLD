@@ -11,7 +11,7 @@ public class Repeater : ADecorator
 {
     public int Repeat { get; set; } = -1;
 
-    public override BTResult Continue()
+    public override sealed BTResult Continue()
     {
         for (var i = 0; i < Repeat; i++)
         {
@@ -20,7 +20,7 @@ public class Repeater : ADecorator
         return State;
     }
 
-    public override BTResult Start()
+    public override sealed BTResult Start()
     {
         State = Child.Start();
         for (var i = 1; i < Repeat; i++)
@@ -30,7 +30,7 @@ public class Repeater : ADecorator
         return State;
     }
 
-    protected override void Initialize(Dictionary<string, Tuple<object, int>> context, bool recursiveInit)
+    protected override sealed void Initialize(Dictionary<string, Tuple<object, int>> context, bool recursiveInit)
     {
         base.Initialize(context, recursiveInit);
         if (Repeat < 1) throw new Exception("Repeat must be set to value 1+");

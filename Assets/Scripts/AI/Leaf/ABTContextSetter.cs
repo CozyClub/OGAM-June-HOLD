@@ -18,12 +18,12 @@ public abstract class ABTContextSetter : ABTNode
     /// continue for this function can assume that no checking need be made
     /// </summary>
     /// <returns></returns>
-    public override BTResult Continue()
+    public override sealed BTResult Continue()
     {
         return State = SetContext(context[NPCController.VERSION_KEY].Item2);
     }
 
-    public override BTResult Start()
+    public override sealed BTResult Start()
     {
         // directly calling, these will never be not found
         State = BTResult.SUCCESS;
@@ -36,7 +36,7 @@ public abstract class ABTContextSetter : ABTNode
         return State;
     }
 
-    protected override void Initialize(Dictionary<string, Tuple<object, int>> context, bool recursiveInit)
+    protected override sealed void Initialize(Dictionary<string, Tuple<object, int>> context, bool recursiveInit)
     {
         if (Key == "" || 
             Key == NPCController.PARENT_KEY || 

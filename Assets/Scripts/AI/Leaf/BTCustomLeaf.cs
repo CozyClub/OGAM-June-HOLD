@@ -9,17 +9,17 @@ public class BTCustomLeaf : ABTNode
     public Func<Dictionary<string, Tuple<object, int>>, BTResult> ContinueFn;
     public Func<Dictionary<string, Tuple<object, int>>, BTResult> StartFn;
 
-    public override BTResult Continue()
+    public override sealed BTResult Continue()
     {
         return State = ContinueFn.Invoke(context);
     }
 
-    public override BTResult Start()
+    public override sealed BTResult Start()
     {
         return State = StartFn.Invoke(context);
     }
 
-    protected override void Initialize(Dictionary<string, Tuple<object, int>> context, bool recursiveInit)
+    protected override sealed void Initialize(Dictionary<string, Tuple<object, int>> context, bool recursiveInit)
     {
         if (StartFn == null || ContinueFn == null)
             throw new Exception("continue and start custom functions are required before initialize");
