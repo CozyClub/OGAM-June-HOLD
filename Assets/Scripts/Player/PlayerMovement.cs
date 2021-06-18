@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     private const float MAX_DEGREE = 360f;
     private const float AVG_DEGREE = 180f;
     private const float CAMERA_LOOK_DISTANCE = 5f;
+    
     [Header("Player movement")]
     [SerializeField]
     private MovementType movementInputType = MovementType.LRRotations;
@@ -56,6 +57,20 @@ public class PlayerMovement : MonoBehaviour
     [Range(15f, 75f)]
     private float maxYRotation = 70f;
 
+    [Header("Jumping")]
+    [SerializeField]
+    private float jumpForce;
+    [SerializeField]
+    private const float airManeuverability = 0.45f;
+    [SerializeField]
+    private float GroundDistance = 0.2f;
+    [SerializeField]
+    private LayerMask Ground;
+    [SerializeField]
+    private Transform groundPosition;
+
+    public bool CaptureInput { get; set; } = true;
+
     public MovementType MovementMode
     {
         get { return movementInputType; }
@@ -82,13 +97,16 @@ public class PlayerMovement : MonoBehaviour
     private float largeMinYRotation = 0f;
     private Vector2 mouseDelta = Vector2.zero;
     private Vector2 movementInput = Vector2.zero;
+    private bool jumpInput;
+    private bool isGrounded = false;
+
 
     #endregion
 
     #region input controlled functions
     public void GetDeltaInput(InputAction.CallbackContext context)
     {
-        if (TimeManager.IsGamePaused)
+        if (TimeManager.IsGamePaused || !CaptureInput)
         {
             mouseDelta = Vector2.zero;
             return;
@@ -98,12 +116,23 @@ public class PlayerMovement : MonoBehaviour
 
     public void GetMovementInput(InputAction.CallbackContext context)
     {
-        if (TimeManager.IsGamePaused)
+        if (TimeManager.IsGamePaused || !CaptureInput)
         {
             movementInput = Vector2.zero;
             return;
         }
         movementInput = context.ReadValue<Vector2>();
+    }
+
+    public void JumpInput()
+    {
+        if (TimeManager.IsGamePaused || !CaptureInput)
+        {
+            jumpInput = false;
+            return;
+        }
+        Debug.Log("jump!");
+        jumpInput = true;
     }
 
     #endregion
@@ -214,17 +243,41 @@ public class PlayerMovement : MonoBehaviour
         DetermineMovementInput(movementInput, out var maxSpeed, out var accel, out var horizAccel);
         // always a frame late
         animator.SetFloat("Speed", maxSpeed);
-        if (maxSpeed == 0f) return;
-        // TODO when we have animations for moving left / right, should also move character in those directions
-        // alternatively set s/d to turn the character left and right, with mouse controls for the topdown 
-        // camera
-        rbody.AddForce(transform.forward * accel);
-        rbody.AddForce(transform.right * horizAccel);
-        if (rbody.velocity.sqrMagnitude > maxSpeed * maxSpeed)
+        isGrounded = Physics.CheckSphere(groundPosition.position, GroundDistance, Ground, QueryTriggerInteraction.Ignore);
+        AttemptJump();
+        if (maxSpeed != 0f)
         {
-            rbody.velocity = rbody.velocity.normalized * maxSpeed;
+            // TODO when we have animations for moving left / right, should also move character in those directions
+            // alternatively set s/d to turn the character left and right, with mouse controls for the topdown 
+            // camera
+            accel *= isGrounded ? 1f : airManeuverability;
+            horizAccel *= isGrounded ? 1f : airManeuverability;
+            rbody.AddForce(transform.forward * accel);
+            rbody.AddForce(transform.right * horizAccel);
+            var horiz = new Vector2(rbody.velocity.x, rbody.velocity.z);
+            
+            if (horiz.sqrMagnitude > maxSpeed * maxSpeed)
+            {
+                horiz = horiz.normalized * maxSpeed;
+                rbody.velocity = new Vector3(horiz.x, rbody.velocity.y, horiz.y);
+            }
         }
+        
+        /**/
         transposeCamTarget.position = transform.position;
+    }
+
+    private void AttemptJump()
+    {
+        if (!jumpInput)
+            return;
+        jumpInput = false;
+        if (!isGrounded)
+            return;
+        Debug.Log("got jump");
+        rbody.velocity = new Vector3(rbody.velocity.x, 0f, rbody.velocity.z);
+        rbody.AddForce(transform.up * jumpForce);
+        isGrounded = false;
     }
 
     private void DetermineMovementInput(Vector2 movementInput, out float maxSpeed, out float accel, out float horizAccel)
