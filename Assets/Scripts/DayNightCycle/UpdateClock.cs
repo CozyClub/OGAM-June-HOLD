@@ -7,6 +7,5 @@ public class UpdateClock : MonoBehaviour
     void Update()
     {
         TimeStamps.ClockUpdate(Time.deltaTime);
-        Debug.Log(25%24);
     }
 }

@@ -11,6 +11,7 @@ public static class TimeStamps
     public static UpdateTime secondTime;
     public static UpdateTime dayTime;
     public static float wholeDayTime;
+    private static bool timeRunning;
 
     private static int currentHours;
     private static int currentMinutes;
@@ -22,6 +23,8 @@ public static class TimeStamps
     
     public static void ClockUpdate(float fixedDeltaTime)
     {
+        if(!timeRunning)
+            return;
         decimalT += 3600/dayToMinute*fixedDeltaTime;
 
         if(decimalT > 1)
