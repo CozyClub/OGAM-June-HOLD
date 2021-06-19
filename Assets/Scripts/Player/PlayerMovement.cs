@@ -291,8 +291,13 @@ public class PlayerMovement : MonoBehaviour
                 horiz = horiz.normalized * maxSpeed;
                 rbody.velocity = new Vector3(horiz.x, rbody.velocity.y, horiz.y);
             }
+            animator.speed = ANIMATION_SPEED * WALK_ANIMATION_MULT * rbody.velocity.magnitude;
         }
-        animator.speed = ANIMATION_SPEED * WALK_ANIMATION_MULT * rbody.velocity.magnitude;
+        if (!isGrounded)
+        {
+            animator.speed = ANIMATION_SPEED;
+            animator.SetFloat("Speed", 0f);
+        }
         transposeCamTarget.position = transform.position;
     }
 
