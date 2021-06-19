@@ -199,6 +199,7 @@ MonoBehaviour:
   rotationYDivider: 60.5
   maxYRotation: 49.7
   jumpForce: 500
+  jumpAnimationDelay: 0.25
   GroundDistance: 0.2
   Ground:
     serializedVersion: 2

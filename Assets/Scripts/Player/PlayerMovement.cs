@@ -70,6 +70,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jumping")]
     [SerializeField]
     private float jumpForce;
+    [Tooltip("There is a windup delay in the jump animation, this delays the actual upwards movement")]
+    [SerializeField]
+    private float jumpAnimationDelay;
     [SerializeField]
     private const float airManeuverability = 0.45f;
     [SerializeField]
@@ -113,6 +116,8 @@ public class PlayerMovement : MonoBehaviour
     private bool jumpInput;
     private bool isGrounded = false;
     private bool crouchInput = false;
+    private bool jumpDelaying;
+    private float jumpDelta;
 
 
     #endregion
@@ -156,6 +161,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
         crouchInput = !crouchInput;
+        animator.SetBool("sneak", crouchInput);
     }
 
     #endregion
@@ -303,11 +309,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void AttemptJump()
     {
-        if (!jumpInput)
+        if (!jumpInput && !jumpDelaying)
             return;
         jumpInput = false;
+        jumpDelta -= Time.deltaTime;
         if (!isGrounded)
             return;
+        if (!jumpDelaying)
+        {
+            jumpDelaying = true;
+            animator.SetTrigger("jump");
+            jumpDelta = jumpAnimationDelay;
+            return;
+        }
+        if (jumpDelta > 0f)
+            return;
+        jumpDelaying = false;
         rbody.velocity = new Vector3(rbody.velocity.x, 0f, rbody.velocity.z);
         rbody.AddForce(transform.up * jumpForce);
         isGrounded = false;
