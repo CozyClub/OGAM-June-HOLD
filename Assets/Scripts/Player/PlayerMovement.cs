@@ -30,7 +30,9 @@ public class PlayerMovement : MonoBehaviour
     private float forwardMoveSpeed = 3f;
     [Tooltip("Ignored when character rotation is not controlled by mouse movement")]
     [SerializeField]
-    private float backwardMoveSpeed = 1;
+    private float backwardMoveSpeed = 1f;
+    [SerializeField]
+    private float crouchingMoveSpeed = 1f;
     [Tooltip("Only used when character rotation is not controlled by mouse movement")]
     [SerializeField]
     private float turnSpeed = 30f;
@@ -71,6 +73,8 @@ public class PlayerMovement : MonoBehaviour
 
     public bool CaptureInput { get; set; } = true;
 
+    public bool IsSneaking { get { return crouchInput; } }
+
     public MovementType MovementMode
     {
         get { return movementInputType; }
@@ -99,6 +103,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movementInput = Vector2.zero;
     private bool jumpInput;
     private bool isGrounded = false;
+    private bool crouchInput = false;
 
 
     #endregion
@@ -131,8 +136,17 @@ public class PlayerMovement : MonoBehaviour
             jumpInput = false;
             return;
         }
-        Debug.Log("jump!");
         jumpInput = true;
+    }
+
+    public void CrouchInput()
+    {
+        if (TimeManager.IsGamePaused || !CaptureInput)
+        {
+            crouchInput = false;
+            return;
+        }
+        crouchInput = !crouchInput;
     }
 
     #endregion
@@ -263,7 +277,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         
-        /**/
         transposeCamTarget.position = transform.position;
     }
 
@@ -274,7 +287,6 @@ public class PlayerMovement : MonoBehaviour
         jumpInput = false;
         if (!isGrounded)
             return;
-        Debug.Log("got jump");
         rbody.velocity = new Vector3(rbody.velocity.x, 0f, rbody.velocity.z);
         rbody.AddForce(transform.up * jumpForce);
         isGrounded = false;
@@ -286,7 +298,11 @@ public class PlayerMovement : MonoBehaviour
         {
             case MovementType.MouseRotations:
                 maxSpeed = forwardMoveSpeed;
-                if (movementInput.y < 0f)
+                if (crouchInput)
+                {
+                    maxSpeed = crouchingMoveSpeed;
+                }
+                else if (movementInput.y < 0f)
                 {
                     maxSpeed = backwardMoveSpeed;
                 }
@@ -303,6 +319,10 @@ public class PlayerMovement : MonoBehaviour
                 if (movementInput.x == 0f && movementInput.y == 0f)
                 {
                     maxSpeed = 0f;
+                }
+                else if (crouchInput)
+                {
+                    maxSpeed = crouchingMoveSpeed;
                 }
                 else
                 {

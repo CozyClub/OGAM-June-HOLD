@@ -27,7 +27,7 @@
                     "id": "54f13953-69ef-47ae-937e-2c21aa82d13f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Tap"
+                    "interactions": "Press"
                 },
                 {
                     "name": "OpenCamera",
@@ -35,7 +35,7 @@
                     "id": "ebad1c8d-7e43-4668-bcfe-99525193c9e1",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Tap"
+                    "interactions": "Press"
                 },
                 {
                     "name": "CloseCamera",
@@ -43,7 +43,7 @@
                     "id": "f26ebf74-00d2-4f58-9666-e7bd3d6f38f5",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Tap"
+                    "interactions": "Press"
                 },
                 {
                     "name": "Jump",
@@ -51,7 +51,15 @@
                     "id": "75c6c36d-df9d-45d8-a5a3-5c6411bc875f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Tap"
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Crouch",
+                    "type": "Button",
+                    "id": "95b9a9ec-b745-473a-8a4e-1e136c4682a6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -338,6 +346,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "12f6d750-5313-4320-a907-44ef6f65fe0a",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "632b6169-d75b-4211-95e7-2bf49065355a",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Crouch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
