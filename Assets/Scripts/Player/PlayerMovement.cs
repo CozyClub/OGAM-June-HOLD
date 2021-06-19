@@ -20,10 +20,12 @@ public class PlayerMovement : MonoBehaviour
     private const float MAX_DEGREE = 360f;
     private const float AVG_DEGREE = 180f;
     private const float CAMERA_LOOK_DISTANCE = 5f;
-    
+    private const float ANIMATION_SPEED = 1f;
+    // an attempt to remove gliding movement, unfortunately the stride length is small
+    // for how fast we want the character to move
+    private const float WALK_ANIMATION_MULT = 0.6f; // scaling factor for the animator speed
+
     [Header("Player movement")]
-    [SerializeField]
-    private MovementType movementInputType = MovementType.LRRotations;
     [SerializeField]
     private float acceleration = 25f;
     [SerializeField]
@@ -46,15 +48,21 @@ public class PlayerMovement : MonoBehaviour
     private Transform lookTarget = null;
     [SerializeField]
     private Transform transposeCamTarget = null;
+    [Tooltip("Set to 1f to disable mouse acceleration")]
     [SerializeField]
-    [Range(0.1f, 0.99f)]
+    [Range(0.1f, 1.0f)]
     private float lookSmoother = 0.2f;
+    [Tooltip("Set below 1f to speed up rotations (generally for gamepads) or above " +
+        "1f to slow down rotations (generally for mouse)")]
     [SerializeField]
-    [Range(1f, 100f)]
-    private float rotationXLimiter = 4f;
+    [Range(0.001f, 400f)]
+    private float rotationXDivider = 4f;
+    [Tooltip("Set below 1f to speed up rotations (generally for gamepads) or above " +
+        "1f to slow down rotations (generally for mouse)")]
     [SerializeField]
-    [Range(1f, 100f)]
-    private float rotationYLimiter = 4f;
+    [Range(0.001f, 400f)]
+    private float rotationYDivider = 4f;
+    [Tooltip("Also effects the ability to zoom in / out")]
     [SerializeField]
     [Range(15f, 75f)]
     private float maxYRotation = 70f;
@@ -74,6 +82,7 @@ public class PlayerMovement : MonoBehaviour
     public bool CaptureInput { get; set; } = true;
 
     public bool IsSneaking { get { return crouchInput; } }
+    private MovementType movementInputType = MovementType.LRRotations;
 
     public MovementType MovementMode
     {
@@ -191,9 +200,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void DetermineRotationInput(ref float xAcc, ref float yAcc)
     {
-        xAcc = Mathf.Lerp(xAcc, mouseDelta.x / rotationXLimiter, lookSmoother);
-        yAcc = Mathf.Lerp(yAcc, mouseDelta.y / rotationYLimiter, lookSmoother);
-        RotateLocalTransform(xAcc);
+        if (mouseDelta.x != 0f)
+            xAcc = Mathf.Lerp(xAcc, mouseDelta.x / rotationXDivider, lookSmoother);
+        else
+            xAcc = 0f;
+        if (mouseDelta.y != 0f)
+            yAcc = Mathf.Lerp(yAcc, mouseDelta.y / rotationYDivider, lookSmoother);
+        else
+            yAcc = 0f;
+        RotateLocalTransform(xAcc, yAcc);
     }
 
     private void CommonRotations(float yAcc, out Vector3 pos, out Vector3 pos2)
@@ -212,7 +227,7 @@ public class PlayerMovement : MonoBehaviour
         pos2 = transform.position + transposeCamTarget.forward * CAMERA_LOOK_DISTANCE;
     }
 
-    private void RotateLocalTransform(float xAcc)
+    private void RotateLocalTransform(float xAcc, float yAcc)
     {
         Vector3 pos, pos2;
         switch (movementInputType)
@@ -257,6 +272,7 @@ public class PlayerMovement : MonoBehaviour
         DetermineMovementInput(movementInput, out var maxSpeed, out var accel, out var horizAccel);
         // always a frame late
         animator.SetFloat("Speed", maxSpeed);
+        animator.speed = ANIMATION_SPEED;
         isGrounded = Physics.CheckSphere(groundPosition.position, GroundDistance, Ground, QueryTriggerInteraction.Ignore);
         AttemptJump();
         if (maxSpeed != 0f)
@@ -276,7 +292,7 @@ public class PlayerMovement : MonoBehaviour
                 rbody.velocity = new Vector3(horiz.x, rbody.velocity.y, horiz.y);
             }
         }
-        
+        animator.speed = ANIMATION_SPEED * WALK_ANIMATION_MULT * rbody.velocity.magnitude;
         transposeCamTarget.position = transform.position;
     }
 
