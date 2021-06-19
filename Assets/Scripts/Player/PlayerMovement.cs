@@ -277,10 +277,16 @@ public class PlayerMovement : MonoBehaviour
         // for when y == 0f
         DetermineMovementInput(movementInput, out var maxSpeed, out var accel, out var horizAccel);
         // always a frame late
-        animator.SetFloat("Speed", maxSpeed);
-        animator.speed = ANIMATION_SPEED;
         isGrounded = Physics.CheckSphere(groundPosition.position, GroundDistance, Ground, QueryTriggerInteraction.Ignore);
         AttemptJump();
+        if (isGrounded)
+            animator.speed = ANIMATION_SPEED;
+        CapAndSetSpeed(maxSpeed, ref accel, ref horizAccel);
+        transposeCamTarget.position = transform.position;
+    }
+
+    private void CapAndSetSpeed(float maxSpeed, ref float accel, ref float horizAccel)
+    {
         if (maxSpeed != 0f)
         {
             // TODO when we have animations for moving left / right, should also move character in those directions
@@ -291,20 +297,25 @@ public class PlayerMovement : MonoBehaviour
             rbody.AddForce(transform.forward * accel);
             rbody.AddForce(transform.right * horizAccel);
             var horiz = new Vector2(rbody.velocity.x, rbody.velocity.z);
-            
-            if (horiz.sqrMagnitude > maxSpeed * maxSpeed)
+            var speed = horiz.magnitude;
+
+            if (speed > maxSpeed)
             {
                 horiz = horiz.normalized * maxSpeed;
                 rbody.velocity = new Vector3(horiz.x, rbody.velocity.y, horiz.y);
+                animator.SetFloat("Speed", maxSpeed);
             }
-            animator.speed = ANIMATION_SPEED * WALK_ANIMATION_MULT * rbody.velocity.magnitude;
+            else
+            {
+                animator.SetFloat("Speed", speed);
+            }
+            if (isGrounded)
+                animator.speed = ANIMATION_SPEED * WALK_ANIMATION_MULT * rbody.velocity.magnitude;
         }
-        if (!isGrounded)
+        else
         {
-            animator.speed = ANIMATION_SPEED;
             animator.SetFloat("Speed", 0f);
         }
-        transposeCamTarget.position = transform.position;
     }
 
     private void AttemptJump()
@@ -312,7 +323,7 @@ public class PlayerMovement : MonoBehaviour
         if (!jumpInput && !jumpDelaying)
             return;
         jumpInput = false;
-        jumpDelta -= Time.deltaTime;
+        jumpDelta -= Time.fixedDeltaTime;
         if (!isGrounded)
             return;
         if (!jumpDelaying)
