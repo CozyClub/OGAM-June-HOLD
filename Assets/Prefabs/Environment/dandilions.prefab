@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5283263234054479088}
   - component: {fileID: 9150804811237413717}
   - component: {fileID: 6420663261241091999}
-  - component: {fileID: 279842539848462114}
+  - component: {fileID: 8774784655334371992}
   m_Layer: 0
   m_Name: dandilions
   m_TagString: Untagged
@@ -40,7 +40,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4763184736220907082}
-  m_Mesh: {fileID: 1081289945537428018, guid: 4d3e70ecddf76fa46ad4f035a0b62f75, type: 3}
+  m_Mesh: {fileID: 3600764992053594250, guid: 4d3e70ecddf76fa46ad4f035a0b62f75, type: 3}
 --- !u!23 &6420663261241091999
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -82,8 +82,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &279842539848462114
-BoxCollider:
+--- !u!64 &8774784655334371992
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -92,6 +92,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.58, y: 1.6815296, z: 0.41}
-  m_Center: {x: -0.28, y: 0.1280141, z: -0.046127558}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 3600764992053594250, guid: 4d3e70ecddf76fa46ad4f035a0b62f75, type: 3}
