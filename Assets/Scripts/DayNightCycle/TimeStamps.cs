@@ -6,21 +6,25 @@ using UnityEngine.Events;
 public static class TimeStamps
 {
     public delegate void UpdateTime(int value);
-    public static UpdateTime hourTime;
-    public static UpdateTime minuteTime;
-    public static UpdateTime secondTime;
-    public static UpdateTime dayTime;
-    public static float wholeDayTime;
-    private static bool timeRunning;
+    public static UpdateTime hourTime; //Event every hour
+    public static UpdateTime minuteTime; //Event every minute
+    public static UpdateTime secondTime; //Event every second
+    public static UpdateTime dayTime; //Event every day
+    public static float wholeDayTime; //Factor of the day, being 0 the start of the day and 1 the end of the day
 
-    private static int currentHours;
-    private static int currentMinutes;
-    private static int currentDays;
-    private static int currentSeconds;
+    public static bool timeRunning {get; private set;} //set via the function
+
+    public static int currentHours{get; private set;} //current Hour
+    public static int currentMinutes {get; private set;} //current Minute
+    public static int currentDays {get; private set;}//current Day
+    public static int currentSeconds {get; private set;}//current Seconds
     private static float decimalT;
 
-    public static float dayToMinute = 1; //15 minutes is one day
+    public static float dayToMinute = 1; //How many minutes is one day, 3600 being 1:1
     
+    /// <summary>
+    /// Updates the clock
+    /// </summary>
     public static void ClockUpdate(float fixedDeltaTime)
     {
         if(!timeRunning)
@@ -59,35 +63,44 @@ public static class TimeStamps
         }
         wholeDayTime = (currentSeconds+currentMinutes*60+currentHours*60*60)/86400f;
     }
+
+    /// <summary>
+    ///Event on every second
+    /// <summary>
     private static void SecondCall()
     {
         if(secondTime != null)
             secondTime(currentSeconds);
     }
+    /// <summary>
+    ///Event every minute
+    /// <summary>
     private static void MinuteCall()
     {
         if(minuteTime != null)
             minuteTime(currentMinutes);
     }
+    /// <summary>
+    ///Evenet every hour
+    /// <summary>
     private static void HourCall()
     {
         if(hourTime != null)
             hourTime(currentHours);
     }
+    /// <summary>
+    ///Event every day
+    /// <summary>
     private static void DayCall()
     {
         if(dayTime != null)
             dayTime(currentDays);
     }
-
-    public static int getHours()
-    {return currentHours;}
-
-    public static int getMinutes()
-    {return currentMinutes;}
-
-    public static float getSeconds()
-    {return currentSeconds;}
-    public static float getDecimalT()
-    {return decimalT;}
+    /// <summary>
+    ///Start the timer
+    /// <summary>
+    public static void startTime()
+    {
+        timeRunning = true;
+    }
 }
