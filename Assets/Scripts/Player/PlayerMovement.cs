@@ -212,7 +212,7 @@ public class PlayerMovement : MonoBehaviour
                         lookRot, turnSpeed * Time.fixedDeltaTime);
                 }
                 CommonRotations(yAcc, out pos, out pos2);
-                lookTarget.position = new Vector3(pos2.x, pos.y, pos2.z);
+                lookTarget.position = new Vector3(pos2.x, pos2.y, pos2.z);
                 lookTarget.eulerAngles = new Vector3(
                     playerPhysicalEye.eulerAngles.x,
                     transposeCamTarget.eulerAngles.y,
