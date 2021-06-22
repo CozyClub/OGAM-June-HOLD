@@ -1,11 +1,38 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class InGameMenu : MonoBehaviour
 {
     public GameObject gameMenu;
+    public GameObject innerMenuPrefab;
+    public Button photoAlbumButton, guidebookButton;
 
-    public void ExitMenuOnClick()
+    public void OpenGuidebookOnClick()
+    {
+        GameObject innerMenu = InitializeInnerMenu();
+    }
+
+    public void OpenPhotoAlbumOnClick()
+    {
+        GameObject innerMenu = InitializeInnerMenu();
+        TextMesh menuText = innerMenu.GetComponent<TextMesh>();
+        menuText.text = "photo album";
+    }
+
+    private GameObject InitializeInnerMenu()
+    {
+        GameObject innerMenu = Instantiate(innerMenuPrefab, gameMenu.transform);
+        Button exitButton = innerMenu.GetComponent<Button>();
+        exitButton.onClick.AddListener(delegate { ExitInnerMenuOnClick(innerMenu); });
+        return innerMenu;
+    }
+
+    public void ExitInnerMenuOnClick(GameObject parent)
+    {
+        Destroy(parent);
+    }
+
+    public void ExitMainMenuOnClick()
     {
         TimeManager.UnpauseGame();
         Cursor.lockState = CursorLockMode.Locked;
