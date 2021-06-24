@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9187406866808714340}
   - component: {fileID: 5201624906538761153}
   - component: {fileID: 8055555460624928523}
-  - component: {fileID: 8226513217894915332}
+  - component: {fileID: 4093757806869645424}
   m_Layer: 0
   m_Name: Grass
   m_TagString: Untagged
@@ -82,7 +82,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8226513217894915332
+--- !u!65 &4093757806869645424
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -93,5 +93,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.29, y: 1.14, z: 0.5}
-  m_Center: {x: 0.11, y: -0.37, z: 0.15}
+  m_Size: {x: 0.37, y: 1.5905427, z: 0.34}
+  m_Center: {x: -0.1, y: 0.76973516, z: 0.02}

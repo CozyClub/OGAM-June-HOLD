@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3833987129412383975}
   - component: {fileID: 187697004456213314}
-  - component: {fileID: 2701634380422745992}
-  - component: {fileID: 7502166723162972741}
+  - component: {fileID: 1937183515868730862}
+  - component: {fileID: 4875683796461700630}
   m_Layer: 0
   m_Name: pinkFlowers
   m_TagString: Untagged
@@ -40,9 +40,22 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4503281144820346461}
-  m_Mesh: {fileID: -5850682858665108276, guid: b6d20e34cbe69e847ba36119b1d3f98e, type: 3}
---- !u!23 &2701634380422745992
-MeshRenderer:
+  m_Mesh: {fileID: 1091821279381748248, guid: b6d20e34cbe69e847ba36119b1d3f98e, type: 3}
+--- !u!65 &1937183515868730862
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4503281144820346461}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2922432, y: 1.1276736, z: 1.2735989}
+  m_Center: {x: 0.015227141, y: 0.52203774, z: 0.165518}
+--- !u!137 &4875683796461700630
+SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -55,7 +68,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
+  m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
@@ -81,17 +94,15 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7502166723162972741
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4503281144820346461}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.74, y: 1.1276735, z: 0.69}
-  m_Center: {x: 0.0152272, y: 0.0285503, z: 0.023265006}
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 1091821279381748248, guid: b6d20e34cbe69e847ba36119b1d3f98e, type: 3}
+  m_Bones: []
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 0}
+  m_AABB:
+    m_Center: {x: 0.015227139, y: 0.5220377, z: 0.16551799}
+    m_Extent: {x: 0.64612156, y: 0.56383675, z: 0.6367994}
+  m_DirtyAABB: 0
