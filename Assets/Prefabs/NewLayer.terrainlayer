@@ -6,11 +6,19 @@ TerrainLayer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD:Assets/Textures/TerrainTextures/Moss_layer.terrainlayer
+  m_Name: Moss_layer
+  m_DiffuseTexture: {fileID: 2800000, guid: d3030dfbbd520564a9599b8e69f0128e, type: 3}
+  m_NormalMapTexture: {fileID: 2800000, guid: f3a9554436afa7b43bfdc4cc916874c4, type: 3}
+  m_MaskMapTexture: {fileID: 0}
+  m_TileSize: {x: 6, y: 6}
+=======
   m_Name: NewLayer
   m_DiffuseTexture: {fileID: 2800000, guid: d3030dfbbd520564a9599b8e69f0128e, type: 3}
   m_NormalMapTexture: {fileID: 2800000, guid: f3a9554436afa7b43bfdc4cc916874c4, type: 3}
   m_MaskMapTexture: {fileID: 0}
   m_TileSize: {x: 5, y: 5}
+>>>>>>> Graphics:Assets/Prefabs/NewLayer.terrainlayer
   m_TileOffset: {x: 0, y: 0}
   m_Specular: {r: 0, g: 0, b: 0, a: 0}
   m_Metallic: 0

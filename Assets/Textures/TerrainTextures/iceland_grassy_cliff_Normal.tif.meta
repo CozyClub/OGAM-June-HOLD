@@ -7,11 +7,15 @@ TextureImporter:
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
+<<<<<<< HEAD
+    sRGBTexture: 0
+=======
 <<<<<<< Updated upstream
     sRGBTexture: 0
 =======
     sRGBTexture: 1
 >>>>>>> Stashed changes
+>>>>>>> Graphics
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
@@ -56,11 +60,15 @@ TextureImporter:
   alphaUsage: 1
   alphaIsTransparency: 0
   spriteTessellationDetail: -1
+<<<<<<< HEAD
+  textureType: 1
+=======
 <<<<<<< Updated upstream
   textureType: 1
 =======
   textureType: 0
 >>>>>>> Stashed changes
+>>>>>>> Graphics
   textureShape: 1
   singleChannelComponent: 0
   maxTextureSizeSet: 0
@@ -129,7 +137,10 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+<<<<<<< HEAD
+=======
 <<<<<<< Updated upstream
+>>>>>>> Graphics
   - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 8192
@@ -142,8 +153,11 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+<<<<<<< HEAD
+=======
 =======
 >>>>>>> Stashed changes
+>>>>>>> Graphics
   spriteSheet:
     serializedVersion: 2
     sprites: []
