@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7830351928546146380
+--- !u!1 &7883973723398798007
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,46 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7485315986484749046}
-  - component: {fileID: 5786831600787844435}
-  - component: {fileID: 3203325423078913550}
-  - component: {fileID: 349501673002443790}
+  - component: {fileID: 7359533767343644685}
+  - component: {fileID: 5876506390348804008}
+  - component: {fileID: 8532487465894501218}
+  - component: {fileID: 733665726723634074}
   m_Layer: 0
-  m_Name: WhiteDaisy
+  m_Name: stick 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7485315986484749046
+--- !u!4 &7359533767343644685
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7830351928546146380}
-  m_LocalRotation: {x: -0.013610769, y: 0.9986388, z: 0.017736426, w: 0.047125887}
-  m_LocalPosition: {x: 29.43, y: 2.82, z: 38.32}
-  m_LocalScale: {x: 3.0790496, y: 3.0790496, z: 3.0790496}
+  m_GameObject: {fileID: 7883973723398798007}
+  m_LocalRotation: {x: -0, y: -0, z: -0.036481064, w: 0.9993344}
+  m_LocalPosition: {x: 77.2, y: 4.7, z: 50.871784}
+  m_LocalScale: {x: 0.65751, y: 0.65751, z: 0.65751}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -2.104, y: 174.623, z: -1.463}
---- !u!33 &5786831600787844435
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -4.181}
+--- !u!33 &5876506390348804008
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7830351928546146380}
-  m_Mesh: {fileID: 2533953052044100698, guid: 60275ed0a4de17343a43ac90fc244e9b, type: 3}
---- !u!137 &3203325423078913550
-SkinnedMeshRenderer:
+  m_GameObject: {fileID: 7883973723398798007}
+  m_Mesh: {fileID: 5385617091279237461, guid: 5861594899e4a2a45b5acf4f2ad1829c, type: 3}
+--- !u!23 &8532487465894501218
+MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7830351928546146380}
+  m_GameObject: {fileID: 7883973723398798007}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -55,12 +55,12 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 3
+  m_RayTracingMode: 2
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c575f94dcd28d6649b0fcba66eb25490, type: 2}
+  - {fileID: 2100000, guid: debb04503bca28a4d83acc2dd041d1b2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81,29 +81,18 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  serializedVersion: 2
-  m_Quality: 0
-  m_UpdateWhenOffscreen: 0
-  m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 2533953052044100698, guid: 60275ed0a4de17343a43ac90fc244e9b, type: 3}
-  m_Bones: []
-  m_BlendShapeWeights: []
-  m_RootBone: {fileID: 0}
-  m_AABB:
-    m_Center: {x: 0.1654897, y: 0.9937529, z: -0.27410454}
-    m_Extent: {x: 0.52647173, y: 1.0225486, z: 0.4876594}
-  m_DirtyAABB: 0
---- !u!64 &349501673002443790
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &733665726723634074
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7830351928546146380}
+  m_GameObject: {fileID: 7883973723398798007}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 2533953052044100698, guid: 60275ed0a4de17343a43ac90fc244e9b, type: 3}
+  m_Mesh: {fileID: 5385617091279237461, guid: 5861594899e4a2a45b5acf4f2ad1829c, type: 3}
