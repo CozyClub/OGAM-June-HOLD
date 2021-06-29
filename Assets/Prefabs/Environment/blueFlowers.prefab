@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6593094307603616351}
   - component: {fileID: 7840973393306459642}
   - component: {fileID: 2518022337310553392}
+  - component: {fileID: 4046814120070813381}
   m_Layer: 0
   m_Name: blueFlowers
   m_TagString: Untagged
@@ -93,3 +94,17 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.053755566, y: 0.4500971, z: 0.021464825}
     m_Extent: {x: 0.51639706, y: 0.48627797, z: 0.39796227}
   m_DirtyAABB: 0
+--- !u!64 &4046814120070813381
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5779438817495566565}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -1701423881944736548, guid: 59ae76f32de105043a9e7bb46698e0d8, type: 3}

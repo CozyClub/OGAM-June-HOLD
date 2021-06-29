@@ -253,6 +253,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2295971041464693756}
   - component: {fileID: 2295971041449142108}
+  - component: {fileID: -8124898623008396155}
   m_Layer: 0
   m_Name: Rock17
   m_TagString: Untagged
@@ -309,6 +310,20 @@ LODGroup:
     renderers:
     - renderer: {fileID: 2295971041466593556}
   m_Enabled: 1
+--- !u!64 &-8124898623008396155
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2295971041464397788}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &2295971041464397790
 GameObject:
   m_ObjectHideFlags: 0
