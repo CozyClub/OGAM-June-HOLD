@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8605847174093847671}
   - component: {fileID: 4666230582620369874}
   - component: {fileID: 7432400310086551320}
-  - component: {fileID: 5791662892155601505}
+  - component: {fileID: 5057616891633129919}
   m_Layer: 0
   m_Name: Little_mushrooms
   m_TagString: Untagged
@@ -82,8 +82,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5791662892155601505
-BoxCollider:
+--- !u!64 &5057616891633129919
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -92,6 +92,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.27, y: 3.7331612, z: 1.83}
-  m_Center: {x: 0.000000029802322, y: 0.017799854, z: 0.024403393}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6445903057087829654, guid: 5c94080dfe032534eb99f5200f16c30d, type: 3}

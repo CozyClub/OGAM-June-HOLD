@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1781355942506953963}
   - component: {fileID: 3393319794721125198}
   - component: {fileID: 645009899355867012}
-  - component: {fileID: 2707514073672402728}
+  - component: {fileID: 6970545994569134681}
   m_Layer: 0
   m_Name: FanLeaves
   m_TagString: Untagged
@@ -26,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1437621787832100433}
-  m_LocalRotation: {x: -0, y: 0.21031494, z: -0, w: 0.9776337}
-  m_LocalPosition: {x: 29.41, y: 0.97, z: 42.33}
-  m_LocalScale: {x: 1.8654, y: 1.8654, z: 1.8654}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 24.282, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3393319794721125198
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -40,7 +40,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1437621787832100433}
-  m_Mesh: {fileID: -5435748694514677299, guid: 906120a61f1c1474d8da70043d4dff54, type: 3}
+  m_Mesh: {fileID: -3524870726373359077, guid: 906120a61f1c1474d8da70043d4dff54, type: 3}
 --- !u!23 &645009899355867012
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -83,8 +83,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2707514073672402728
-BoxCollider:
+--- !u!64 &6970545994569134681
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -93,6 +93,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.77, y: 1.146387, z: 0.38}
-  m_Center: {x: 0.047724098, y: 0, z: 0.00419122}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3524870726373359077, guid: 906120a61f1c1474d8da70043d4dff54, type: 3}
