@@ -11,8 +11,7 @@ public class PhotoCamera : MonoBehaviour
     private const float CAMERA_SHOT_DELAY = 0.3f;
     public PlayerMovement playerRef;
     public RenderTexture photoTexture;
-
-    int photoMaxPerDay = 12;
+    readonly int photoMaxPerDay = 12;
 
     public RawImage photoDisplay;
 

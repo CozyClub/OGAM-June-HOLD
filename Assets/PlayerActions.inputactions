@@ -46,6 +46,14 @@
                     "interactions": "Press"
                 },
                 {
+                    "name": "ToggleMenu",
+                    "type": "Button",
+                    "id": "d6e35e90-0d00-477d-a05c-c498e1d4a72e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Jump",
                     "type": "Button",
                     "id": "75c6c36d-df9d-45d8-a5a3-5c6411bc875f",
@@ -324,6 +332,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "CloseCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "50e3c8cb-6925-4f08-bbe8-6482473cbf9d",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ToggleMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1383838c-011e-499d-b47a-e45c26facc80",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "ToggleMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
