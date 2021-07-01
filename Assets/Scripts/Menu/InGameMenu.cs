@@ -69,30 +69,33 @@ public class InGameMenu : MonoBehaviour
         Destroy(parent);
     }
 
-    public void ExitMainMenuOnClick()
-    {
-        TimeManager.UnpauseGame();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        Debug.Log("deactivating menu");
-        if (gameMenu.activeSelf)
-        {
-            gameMenu.SetActive(false);
-        }
-    }
-
     #region Input-controlled actions
 
-    public void LoadMenu()
+    public void ToggleMenu()
     {
-        TimeManager.PauseGame();
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
         if (!gameMenu.activeSelf)
         {
+            TimeManager.PauseGame();
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             gameMenu.SetActive(true);
+        }
+        else
+        {
+            TimeManager.UnpauseGame();
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            gameMenu.SetActive(false);
+
+            if (photoAlbumMenu != null && photoAlbumMenu.activeSelf)
+            {
+                Destroy(photoAlbumMenu);
+            }
+
+            if(guideBookMenu != null && guideBookMenu.activeSelf)
+            {
+                Destroy(guideBookMenu);
+            }
         }
     }
 

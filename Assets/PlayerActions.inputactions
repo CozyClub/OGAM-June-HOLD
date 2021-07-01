@@ -46,12 +46,12 @@
                     "interactions": "Press"
                 },
                 {
-                    "name": "OpenMenu",
+                    "name": "ToggleMenu",
                     "type": "Button",
                     "id": "d6e35e90-0d00-477d-a05c-c498e1d4a72e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": ""
                 },
                 {
                     "name": "Jump",
@@ -342,7 +342,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "OpenMenu",
+                    "action": "ToggleMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -353,7 +353,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "OpenMenu",
+                    "action": "ToggleMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
