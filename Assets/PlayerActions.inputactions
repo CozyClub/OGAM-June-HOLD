@@ -14,6 +14,22 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Crouch",
+                    "type": "Button",
+                    "id": "95b9a9ec-b745-473a-8a4e-1e136c4682a6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "75c6c36d-df9d-45d8-a5a3-5c6411bc875f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
                     "name": "Look",
                     "type": "Value",
                     "id": "40e71273-6fc6-40f8-a1e4-f04c4a6d062a",
@@ -52,22 +68,6 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
-                },
-                {
-                    "name": "Jump",
-                    "type": "Button",
-                    "id": "75c6c36d-df9d-45d8-a5a3-5c6411bc875f",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press"
-                },
-                {
-                    "name": "Crouch",
-                    "type": "Button",
-                    "id": "95b9a9ec-b745-473a-8a4e-1e136c4682a6",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -359,28 +359,6 @@
                 },
                 {
                     "name": "",
-                    "id": "0e19651b-9d4d-4797-bdb3-21538ee03470",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0efcd3ec-95cd-41ac-8d9a-060e0857e24f",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "12f6d750-5313-4320-a907-44ef6f65fe0a",
                     "path": "<Gamepad>/buttonWest",
                     "interactions": "",
@@ -398,6 +376,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0e19651b-9d4d-4797-bdb3-21538ee03470",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0efcd3ec-95cd-41ac-8d9a-060e0857e24f",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

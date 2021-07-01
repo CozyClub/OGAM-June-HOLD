@@ -99,8 +99,8 @@ public static class TimeStamps
     /// <summary>
     ///Start the timer
     /// <summary>
-    public static void startTime()
+    public static void startTime(bool value)
     {
-        timeRunning = true;
+        timeRunning = value;
     }
 }
