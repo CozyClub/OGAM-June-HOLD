@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class InGameMenu : MonoBehaviour
@@ -7,22 +8,58 @@ public class InGameMenu : MonoBehaviour
     public GameObject innerMenuPrefab;
     public Button photoAlbumButton, guidebookButton;
 
+    private GameObject guideBookMenu, photoAlbumMenu;
+
     public void OpenGuidebookOnClick()
     {
-        GameObject innerMenu = InitializeInnerMenu();
+        if (guideBookMenu == null || !guideBookMenu.activeSelf)
+        {
+            if(photoAlbumMenu != null && photoAlbumMenu.activeSelf)
+            {
+                guideBookMenu = InitializeInnerMenu(offset: true);
+            }
+            else
+            {
+                guideBookMenu = InitializeInnerMenu(offset: false);
+            }
+        }
+
+        TextMeshProUGUI menuText = guideBookMenu.GetComponentInChildren<TextMeshProUGUI>();
+        menuText.text = "guidebook";
+
+        ScrollRect scrollRect = guideBookMenu.GetComponentInChildren<ScrollRect>();
     }
 
     public void OpenPhotoAlbumOnClick()
     {
-        GameObject innerMenu = InitializeInnerMenu();
-        TextMesh menuText = innerMenu.GetComponent<TextMesh>();
+        if (photoAlbumMenu == null || !photoAlbumMenu.activeSelf)
+        {
+            if (guideBookMenu != null && guideBookMenu.activeSelf)
+            {
+                photoAlbumMenu = InitializeInnerMenu(offset: true);
+            }
+            else
+            {
+                photoAlbumMenu = InitializeInnerMenu(offset: false);
+            }
+        }
+
+        TextMeshProUGUI menuText = photoAlbumMenu.GetComponentInChildren<TextMeshProUGUI>();
         menuText.text = "photo album";
     }
 
-    private GameObject InitializeInnerMenu()
+    private GameObject InitializeInnerMenu(bool offset)
     {
-        GameObject innerMenu = Instantiate(innerMenuPrefab, gameMenu.transform);
-        Button exitButton = innerMenu.GetComponent<Button>();
+        Vector3 menuTransform = innerMenuPrefab.transform.position;
+        if (offset)
+        {
+            menuTransform = innerMenuPrefab.transform.position + new Vector3(10f, -10f, 0);
+        }
+
+        GameObject innerMenu = Instantiate(innerMenuPrefab, menuTransform, innerMenuPrefab.transform.rotation);
+        innerMenu.transform.SetParent(gameMenu.transform, false);
+
+        Button exitButton = innerMenu.GetComponentInChildren<Button>();
         exitButton.onClick.AddListener(delegate { ExitInnerMenuOnClick(innerMenu); });
         return innerMenu;
     }
