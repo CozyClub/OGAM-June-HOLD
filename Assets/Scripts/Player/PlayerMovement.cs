@@ -32,7 +32,9 @@ public class PlayerMovement : MonoBehaviour
     private float forwardMoveSpeed = 3f;
     [Tooltip("Ignored when character rotation is not controlled by mouse movement")]
     [SerializeField]
-    private float backwardMoveSpeed = 1;
+    private float backwardMoveSpeed = 1f;
+    [SerializeField]
+    private float crouchingMoveSpeed = 1f;
     [Tooltip("Only used when character rotation is not controlled by mouse movement")]
     [SerializeField]
     private float turnSpeed = 30f;
@@ -65,6 +67,24 @@ public class PlayerMovement : MonoBehaviour
     [Range(15f, 75f)]
     private float maxYRotation = 70f;
 
+    [Header("Jumping")]
+    [SerializeField]
+    private float jumpForce;
+    [Tooltip("There is a windup delay in the jump animation, this delays the actual upwards movement")]
+    [SerializeField]
+    private float jumpAnimationDelay;
+    [SerializeField]
+    private const float airManeuverability = 0.45f;
+    [SerializeField]
+    private float GroundDistance = 0.2f;
+    [SerializeField]
+    private LayerMask Ground;
+    [SerializeField]
+    private Transform groundPosition;
+
+    public bool CaptureInput { get; set; } = true;
+
+    public bool IsSneaking { get { return crouchInput; } }
     private MovementType movementInputType = MovementType.LRRotations;
 
     public MovementType MovementMode
@@ -93,13 +113,19 @@ public class PlayerMovement : MonoBehaviour
     private float largeMinYRotation = 0f;
     private Vector2 mouseDelta = Vector2.zero;
     private Vector2 movementInput = Vector2.zero;
+    private bool jumpInput;
+    private bool isGrounded = false;
+    private bool crouchInput = false;
+    private bool jumpDelaying;
+    private float jumpDelta;
+
 
     #endregion
 
     #region input controlled functions
     public void GetDeltaInput(InputAction.CallbackContext context)
     {
-        if (TimeManager.IsGamePaused)
+        if (TimeManager.IsGamePaused || !CaptureInput)
         {
             mouseDelta = Vector2.zero;
             return;
@@ -109,12 +135,33 @@ public class PlayerMovement : MonoBehaviour
 
     public void GetMovementInput(InputAction.CallbackContext context)
     {
-        if (TimeManager.IsGamePaused)
+        if (TimeManager.IsGamePaused || !CaptureInput)
         {
             movementInput = Vector2.zero;
             return;
         }
         movementInput = context.ReadValue<Vector2>();
+    }
+
+    public void JumpInput()
+    {
+        if (TimeManager.IsGamePaused || !CaptureInput)
+        {
+            jumpInput = false;
+            return;
+        }
+        jumpInput = true;
+    }
+
+    public void CrouchInput()
+    {
+        if (TimeManager.IsGamePaused || !CaptureInput)
+        {
+            crouchInput = false;
+            return;
+        }
+        crouchInput = !crouchInput;
+        animator.SetBool("sneak", crouchInput);
     }
 
     #endregion
@@ -212,7 +259,7 @@ public class PlayerMovement : MonoBehaviour
                         lookRot, turnSpeed * Time.fixedDeltaTime);
                 }
                 CommonRotations(yAcc, out pos, out pos2);
-                lookTarget.position = new Vector3(pos2.x, pos.y, pos2.z);
+                lookTarget.position = new Vector3(pos2.x, pos2.y, pos2.z);
                 lookTarget.eulerAngles = new Vector3(
                     playerPhysicalEye.eulerAngles.x,
                     transposeCamTarget.eulerAngles.y,
@@ -230,20 +277,68 @@ public class PlayerMovement : MonoBehaviour
         // for when y == 0f
         DetermineMovementInput(movementInput, out var maxSpeed, out var accel, out var horizAccel);
         // always a frame late
-        animator.SetFloat("Speed", maxSpeed);
-        animator.speed = ANIMATION_SPEED;
-        if (maxSpeed == 0f) return;
-        // TODO when we have animations for moving left / right, should also move character in those directions
-        // alternatively set s/d to turn the character left and right, with mouse controls for the topdown 
-        // camera
-        rbody.AddForce(transform.forward * accel);
-        rbody.AddForce(transform.right * horizAccel);
-        if (rbody.velocity.sqrMagnitude > maxSpeed * maxSpeed)
-        {
-            rbody.velocity = rbody.velocity.normalized * maxSpeed;
-        }
-        animator.speed = ANIMATION_SPEED * WALK_ANIMATION_MULT * rbody.velocity.magnitude;
+        isGrounded = Physics.CheckSphere(groundPosition.position, GroundDistance, Ground, QueryTriggerInteraction.Ignore);
+        AttemptJump();
+        if (isGrounded)
+            animator.speed = ANIMATION_SPEED;
+        CapAndSetSpeed(maxSpeed, ref accel, ref horizAccel);
         transposeCamTarget.position = transform.position;
+    }
+
+    private void CapAndSetSpeed(float maxSpeed, ref float accel, ref float horizAccel)
+    {
+        if (maxSpeed != 0f)
+        {
+            // TODO when we have animations for moving left / right, should also move character in those directions
+            // alternatively set s/d to turn the character left and right, with mouse controls for the topdown 
+            // camera
+            accel *= isGrounded ? 1f : airManeuverability;
+            horizAccel *= isGrounded ? 1f : airManeuverability;
+            rbody.AddForce(transform.forward * accel);
+            rbody.AddForce(transform.right * horizAccel);
+            var horiz = new Vector2(rbody.velocity.x, rbody.velocity.z);
+            var speed = horiz.magnitude;
+
+            if (speed > maxSpeed)
+            {
+                horiz = horiz.normalized * maxSpeed;
+                rbody.velocity = new Vector3(horiz.x, rbody.velocity.y, horiz.y);
+                animator.SetFloat("Speed", maxSpeed);
+            }
+            else
+            {
+                animator.SetFloat("Speed", speed);
+            }
+            if (isGrounded)
+                animator.speed = ANIMATION_SPEED * WALK_ANIMATION_MULT * rbody.velocity.magnitude;
+        }
+        else
+        {
+            animator.SetFloat("Speed", 0f);
+        }
+    }
+
+    private void AttemptJump()
+    {
+        if (!jumpInput && !jumpDelaying)
+            return;
+        jumpInput = false;
+        jumpDelta -= Time.fixedDeltaTime;
+        if (!isGrounded)
+            return;
+        if (!jumpDelaying)
+        {
+            jumpDelaying = true;
+            animator.SetTrigger("jump");
+            jumpDelta = jumpAnimationDelay;
+            return;
+        }
+        if (jumpDelta > 0f)
+            return;
+        jumpDelaying = false;
+        rbody.velocity = new Vector3(rbody.velocity.x, 0f, rbody.velocity.z);
+        rbody.AddForce(transform.up * jumpForce);
+        isGrounded = false;
     }
 
     private void DetermineMovementInput(Vector2 movementInput, out float maxSpeed, out float accel, out float horizAccel)
@@ -252,7 +347,11 @@ public class PlayerMovement : MonoBehaviour
         {
             case MovementType.MouseRotations:
                 maxSpeed = forwardMoveSpeed;
-                if (movementInput.y < 0f)
+                if (crouchInput)
+                {
+                    maxSpeed = crouchingMoveSpeed;
+                }
+                else if (movementInput.y < 0f)
                 {
                     maxSpeed = backwardMoveSpeed;
                 }
@@ -269,6 +368,10 @@ public class PlayerMovement : MonoBehaviour
                 if (movementInput.x == 0f && movementInput.y == 0f)
                 {
                     maxSpeed = 0f;
+                }
+                else if (crouchInput)
+                {
+                    maxSpeed = crouchingMoveSpeed;
                 }
                 else
                 {

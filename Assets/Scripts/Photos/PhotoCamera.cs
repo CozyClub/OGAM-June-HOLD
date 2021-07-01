@@ -1,4 +1,5 @@
 ﻿using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(CinemachineVirtualCamera))]
 public class PhotoCamera : MonoBehaviour
 {
+    private const float CAMERA_SHOT_DELAY = 0.3f;
     public PlayerMovement playerRef;
     public RenderTexture photoTexture;
     readonly int photoMaxPerDay = 12;
@@ -31,6 +33,7 @@ public class PhotoCamera : MonoBehaviour
     /// Image data hydrated after photo is taken.
     /// </summary>
     public static PhotoDTO imageData;
+    private bool canTakePicture = false;
 
     public string PhotoDirectoryPath => PhotoCollectionDTO.GetPhotoDirectoryPath();
 
@@ -55,14 +58,23 @@ public class PhotoCamera : MonoBehaviour
         photoFrame.SetActive(true);
         cineCamera.Priority = 1000;
         playerRef.MovementMode = PlayerMovement.MovementType.MouseRotations;
+        StartCoroutine(AllowPictureTaking());
     }
 
     public void TakePicture()
     {
-        if (TimeManager.IsGamePaused || !photoFrame.activeSelf) return;
-
+        if (TimeManager.IsGamePaused || !canTakePicture) return;
         RenderCapture();
     }
+
+    private IEnumerator AllowPictureTaking()
+    {
+        if (canTakePicture) yield break;
+        yield return new WaitForSeconds(CAMERA_SHOT_DELAY);
+        canTakePicture = true;
+    }
+
+
     #endregion
 
     /// <summary>
@@ -129,10 +141,11 @@ public class PhotoCamera : MonoBehaviour
         photo.SetActive(true);
     }
 
+    // this is also called from input
     public void CloseCamera()
     {
         TimeManager.UnpauseGame();
-
+        canTakePicture = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 

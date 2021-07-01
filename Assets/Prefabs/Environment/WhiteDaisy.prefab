@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7485315986484749046}
   - component: {fileID: 5786831600787844435}
-  - component: {fileID: 8622708730345429401}
-  - component: {fileID: 7707878782553427022}
+  - component: {fileID: 3203325423078913550}
+  - component: {fileID: 349501673002443790}
   m_Layer: 0
   m_Name: WhiteDaisy
   m_TagString: Untagged
@@ -40,9 +40,9 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7830351928546146380}
-  m_Mesh: {fileID: 8605518805750137126, guid: 60275ed0a4de17343a43ac90fc244e9b, type: 3}
---- !u!23 &8622708730345429401
-MeshRenderer:
+  m_Mesh: {fileID: 2533953052044100698, guid: 60275ed0a4de17343a43ac90fc244e9b, type: 3}
+--- !u!137 &3203325423078913550
+SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -55,7 +55,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
+  m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
@@ -81,9 +81,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7707878782553427022
-BoxCollider:
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 2533953052044100698, guid: 60275ed0a4de17343a43ac90fc244e9b, type: 3}
+  m_Bones: []
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 0}
+  m_AABB:
+    m_Center: {x: 0.1654897, y: 0.9937529, z: -0.27410454}
+    m_Extent: {x: 0.52647173, y: 1.0225486, z: 0.4876594}
+  m_DirtyAABB: 0
+--- !u!64 &349501673002443790
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -92,6 +103,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.1, y: 2.0372124, z: 0.11}
-  m_Center: {x: -0, y: 0.09369156, z: 0}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2533953052044100698, guid: 60275ed0a4de17343a43ac90fc244e9b, type: 3}

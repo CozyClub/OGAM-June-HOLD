@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7231422455789823243}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.6055851, y: -0.7611, z: 5.1179996}
+  m_LocalPosition: {x: 1.6055851, y: -0.7611, z: -0.21199846}
   m_LocalScale: {x: 2.8565392, y: 2.8565392, z: 2.8565392}
   m_Children: []
   m_Father: {fileID: 8929736889373293127}
@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 9124116181603731396}
   - component: {fileID: 990290983211967571}
   - component: {fileID: 3306965255496583997}
-  - component: {fileID: 452916446893151536}
+  - component: {fileID: 3109616756247097984}
   m_Layer: 0
   m_Name: WaterLily
   m_TagString: Untagged
@@ -154,7 +154,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8302493774550017734}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.1, y: -0.55, z: 6.19}
+  m_LocalPosition: {x: -0.1, y: -0.55, z: 0.86}
   m_LocalScale: {x: 2.8682, y: 1.576395, z: 2.8682}
   m_Children: []
   m_Father: {fileID: 8929736889373293127}
@@ -209,8 +209,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &452916446893151536
-SphereCollider:
+--- !u!65 &3109616756247097984
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -220,5 +220,5 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.45506418
-  m_Center: {x: 0.000000014901161, y: 0.039288267, z: 0.00000023841858}
+  m_Size: {x: 0.55, y: 0.09, z: 0.6}
+  m_Center: {x: -0.00000093877316, y: 0.1, z: 0.00000008940696}
