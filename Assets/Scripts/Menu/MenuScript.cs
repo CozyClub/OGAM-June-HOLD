@@ -4,10 +4,11 @@ using UnityEngine.UI;
 public class MenuScript : MonoBehaviour
 {
     //public Button startButton, settingsButton, quitButton, backButton;
+    public Button fileButton;
 
     public GameObject mainMenu;
     public GameObject settingsMenu;
-
+    public GameObject fileMenu;
 
     void Start()
     {
@@ -15,6 +16,7 @@ public class MenuScript : MonoBehaviour
         //settingsButton.onClick.AddListener(SettingsOnClick);
         //quitButton.onClick.AddListener(QuitOnClick);
         //backButton.onClick.AddListener(BackOnClick);
+        fileButton.onClick.AddListener(FileOnClick);
     }
 
     public void StartOnClick()
@@ -42,5 +44,17 @@ public class MenuScript : MonoBehaviour
         Debug.Log("Loading main menu.");
         settingsMenu.SetActive(false);
         mainMenu.SetActive(true);
+    }
+
+    public void FileOnClick()
+    {
+        if (!fileMenu.activeSelf)
+        {
+            fileMenu.SetActive(true);
+        }
+        else
+        {
+            fileMenu.SetActive(false);
+        }
     }
 }

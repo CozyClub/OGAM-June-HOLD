@@ -28,7 +28,7 @@ public class GameCursor : MonoBehaviour
 
     Texture2D GetTexture(Sprite sprite)
     {
-        Texture2D texture = new Texture2D((int)sprite.rect.width, (int)sprite.rect.height);
+        Texture2D texture = new Texture2D((int)sprite.rect.width, (int)sprite.rect.height, TextureFormat.ARGB32, false);
         Color[] pixels = sprite.texture.GetPixels(
             (int)sprite.rect.x,
             (int)sprite.rect.y,
