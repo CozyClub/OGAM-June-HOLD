@@ -75,7 +75,7 @@ public class InGameMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-            Debug.Log("deactivating menu");
+        Debug.Log("deactivating menu");
         if (gameMenu.activeSelf)
         {
             gameMenu.SetActive(false);
