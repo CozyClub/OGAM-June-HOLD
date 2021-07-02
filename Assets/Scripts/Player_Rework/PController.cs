@@ -28,12 +28,10 @@ public class PController : MonoBehaviour
     Vector3 groundNormal;
 
     public bool show;
-    private PModel modelAnim;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        modelAnim = GetComponentInChildren<PModel>();
     }
     void FixedUpdate()
     {
