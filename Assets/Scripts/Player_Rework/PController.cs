@@ -10,52 +10,71 @@ public class PController : MonoBehaviour
     private bool jump;
     private bool crouch;
     public Transform forwardRef;
+
     [Header("Player Parameters")]
     public float speed;
     public float jumpSpeed;
+    public float smoothFactor;
+    public float smoothRotation;
+    public AnimationCurve acceleration;
+    private float timeWalk;
 
     [Header("Ground Detection")]
     public int groundRes;
-    public bool inGround;
+    bool inGround;
     public LayerMask groundMask;
-    public float maxGroundDist = 1.3f;
-    public float playerRadious = .5f;
-    public Vector3 groundNormal;
+    float maxGroundDist = 1.3f;
+    float playerRadious = .5f;
+    Vector3 groundNormal;
 
     public bool show;
+    private PModel modelAnim;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        modelAnim = GetComponentInChildren<PModel>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void FixedUpdate()
     {
-        Vector3 currentVel = rb.velocity;
-        CheckMovement(ref currentVel);
-        Jump(ref currentVel);
-        rb.velocity = currentVel;
+        RotatePlayer();
+        CheckMovement();
+        Jump();
     }
-    void CheckMovement(ref Vector3 inital)
+    void RotatePlayer()
     {
         groundNormal = DetectGround();
         Vector3 transFor = Vector3.ProjectOnPlane(forwardRef.forward, groundNormal);
         Vector3 direction = transFor*inputVec.y+forwardRef.right*inputVec.x;
-        inital = direction.normalized*speed+rb.velocity.y*Vector3.up;   
+        if(inGround)
+            transform.rotation = Quaternion.Lerp(transform.rotation,
+                Quaternion.FromToRotation(transform.forward, direction.normalized*speed)*transform.rotation, 
+                smoothRotation*Time.fixedDeltaTime);
     }
-    void Jump(ref Vector3 inital)
+    void CheckMovement()
+    {
+        Vector3 trueForward = -Vector3.Cross(groundNormal, transform.right).normalized;
+        Vector3 inputClamped = Vector3.ClampMagnitude(inputVec, 1);
+        if(inputClamped.sqrMagnitude < 0.1f)
+            timeWalk = 0;
+        else
+            timeWalk += Time.fixedDeltaTime;
+        Vector3 lerpedMovement = Vector3.Lerp(rb.velocity-rb.velocity.y*Vector3.up, 
+            trueForward*speed*inputClamped.magnitude*acceleration.Evaluate(timeWalk), 
+            smoothFactor*Time.fixedDeltaTime);
+        if(inGround)        
+            rb.velocity = lerpedMovement+rb.velocity.y*Vector3.up;   
+        
+    }
+    void Jump()
     {
         if(inGround && jump)
         {
             jump = false;
-            inital =  new Vector3(inital.x, 0, inital.z)+groundNormal*jumpSpeed;
+            rb.velocity =  new Vector3(rb.velocity.x, 0, rb.velocity.z)+groundNormal*jumpSpeed;
         }
+        else
+            jump = false;
     }
 
     Vector3 DetectGround()
