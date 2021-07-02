@@ -12,6 +12,7 @@ public class PController : MonoBehaviour
     public Transform forwardRef;
     [Header("Player Parameters")]
     public float speed;
+    public float jumpSpeed;
 
     [Header("Ground Detection")]
     public int groundRes;
@@ -19,6 +20,7 @@ public class PController : MonoBehaviour
     public LayerMask groundMask;
     public float maxGroundDist = 1.3f;
     public float playerRadious = .5f;
+    public Vector3 groundNormal;
 
     public bool show;
     // Start is called before the first frame update
@@ -35,10 +37,25 @@ public class PController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 groundNormal = DetectGround();
+        Vector3 currentVel = rb.velocity;
+        CheckMovement(ref currentVel);
+        Jump(ref currentVel);
+        rb.velocity = currentVel;
+    }
+    void CheckMovement(ref Vector3 inital)
+    {
+        groundNormal = DetectGround();
         Vector3 transFor = Vector3.ProjectOnPlane(forwardRef.forward, groundNormal);
         Vector3 direction = transFor*inputVec.y+forwardRef.right*inputVec.x;
-        rb.velocity = direction.normalized*speed+rb.velocity.y*Vector3.up;
+        inital = direction.normalized*speed+rb.velocity.y*Vector3.up;   
+    }
+    void Jump(ref Vector3 inital)
+    {
+        if(inGround && jump)
+        {
+            jump = false;
+            inital =  new Vector3(inital.x, 0, inital.z)+groundNormal*jumpSpeed;
+        }
     }
 
     Vector3 DetectGround()
@@ -59,7 +76,11 @@ public class PController : MonoBehaviour
             rotation = Quaternion.Euler(0,360/groundRes,0)*rotation;
         }
         inGround = (found >= 0.4*groundRes);    
-        return residual/found;
+        if(!inGround)
+            residual = Vector3.up;
+        else
+            residual = residual/found;
+        return residual;
     }
     public void Move(InputAction.CallbackContext context)
     {
