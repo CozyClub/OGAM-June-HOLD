@@ -19,12 +19,6 @@ public class PCameraController : MonoBehaviour
     public Transform model;
     // Start is called before the first frame update
 
-    /// <summary>
-    /// Photo image game object
-    /// </summary>
-    static GameObject photo;
-    static Texture2D image;
-    public string PhotoDirectoryPath => PhotoCollectionDTO.GetPhotoDirectoryPath();
     void Start()
     {
         virtualCamera = GetComponent<CinemachineVirtualCamera>();
