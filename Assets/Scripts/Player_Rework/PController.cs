@@ -83,12 +83,15 @@ public class PController : MonoBehaviour
         Debug.DrawRay(transform.position, direction*2, Color.blue);
         if(inGround)
         {
+            Vector3 real;
             if(direction.sqrMagnitude > 0)
-            {
-                transform.rotation = Quaternion.Lerp(transform.rotation,
-                    Quaternion.LookRotation(direction.normalized, groundNormal),                
-                    smoothRotation*Time.fixedDeltaTime);
-            }
+                real = direction.normalized;
+            else
+                real = transform.forward;
+            
+            transform.rotation = Quaternion.Lerp(transform.rotation,
+                Quaternion.LookRotation(real, groundNormal),                
+                smoothRotation*Time.fixedDeltaTime);
         }
         else
             transform.rotation = Quaternion.Lerp(transform.rotation,
