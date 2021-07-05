@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2410902156324725512}
   - component: {fileID: 473381490993240002}
   - component: {fileID: 8851320146875481914}
+  - component: {fileID: 7622107424625380870}
   m_Layer: 0
   m_Name: stick
   m_TagString: Untagged
@@ -96,3 +97,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 5385617091279237461, guid: 5861594899e4a2a45b5acf4f2ad1829c, type: 3}
+--- !u!208 &7622107424625380870
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2130542944259290647}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 4.078, y: 0.41700003, z: 1.506}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.85700005, y: 0, z: 1.1370001}
+  m_TimeToStationary: 0.5

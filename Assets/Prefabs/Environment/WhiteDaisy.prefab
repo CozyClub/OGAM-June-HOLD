@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 7485315986484749046}
   - component: {fileID: 5786831600787844435}
   - component: {fileID: 3203325423078913550}
+  - component: {fileID: 5233721743633992750}
+  - component: {fileID: 4726696955414867163}
   m_Layer: 0
   m_Name: WhiteDaisy
   m_TagString: Untagged
@@ -92,3 +94,33 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.1654897, y: 0.9937529, z: -0.27410454}
     m_Extent: {x: 0.52647173, y: 1.0225486, z: 0.4876594}
   m_DirtyAABB: 0
+--- !u!64 &5233721743633992750
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7830351928546146380}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2533953052044100698, guid: 60275ed0a4de17343a43ac90fc244e9b, type: 3}
+--- !u!208 &4726696955414867163
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7830351928546146380}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.26, y: 1.023, z: 0.26}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.37, y: 0.994, z: 0}
+  m_TimeToStationary: 0.5

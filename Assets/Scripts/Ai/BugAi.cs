@@ -1,28 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
+
 
 public class BugAi : MonoBehaviour
 {
     private Transform Player;
-    public float speed;
+    public float TurnSpeed;
     public LayerMask GroundLayer, PlayerLayer;
-    public bool FlyEscape;
+    public bool FlyEscape;  //Can this bug fly?
     bool Flying = false;
+    public float IdleTime; //How long it takes a break before moving again
+
     Animator BugAnim;
-    Rigidbody BugBody;
+    NavMeshAgent BugAgent;
+    Vector3 destination;
 
     public float WalkRange;
-    float stopDistance = 0.1f;
-
     public float SightRange;
+
     bool PlayerInSight;
-    public float PlayerTooFast;
     Animator PlayerAnim;
 
     List<Vector3> WalkPoints = new List<Vector3>();
     private int currentPoint = 0;
-
+    float timer;
+    bool Onbreak = false;
     bool Flee;
 
 
@@ -31,104 +36,148 @@ public class BugAi : MonoBehaviour
         Player = GameObject.FindGameObjectWithTag("Player").transform;
         BugAnim = gameObject.GetComponent<Animator>();
         PlayerAnim = Player.GetComponentInChildren<Animator>();
-        BugBody = gameObject.GetComponent<Rigidbody>();
+        BugAgent = gameObject.GetComponent<NavMeshAgent>();
 
     }
 
 
     private void Start()
     {
-        Vector3 point = Vector3.zero;
+        Vector3 Wpoint = Vector3.zero;
 
         for (int i = 0; WalkPoints.Count < 5; i++)
         {
-            point = NewPosition(WalkRange);
+            Wpoint = NewPosition(WalkRange);
 
-            if (point != Vector3.zero)
-                WalkPoints.Add(NewPosition(WalkRange));
+            if (Wpoint != Vector3.zero)
+            {
+                WalkPoints.Add(Wpoint);
+
+            }
 
         }
 
+        timer = IdleTime;
+    }
+
+    private void OnDrawGizmos()
+    {
+        for (int i = 0; i < WalkPoints.Count; i++)
+            Handles.Label(WalkPoints[i], i.ToString());
 
     }
+
 
     // Update is called once per frame
     void Update()
     {
-        //How far has it walked
-        float distance = (WalkPoints[currentPoint] - transform.position).magnitude;
 
         //Is the player closeby?
         PlayerInSight = Physics.CheckSphere(transform.position, SightRange, PlayerLayer);
 
         //If player is too close, and walks too fast, it runs away
-        if (PlayerAnim.GetFloat("Speed") >= PlayerTooFast && PlayerInSight) 
+        if (PlayerAnim.GetBool("sneak")== false && PlayerInSight) 
             flee();
 
-        if (distance <= stopDistance)
-        {
-            //Go to next point
-            currentPoint += 1;
 
-            //If we're at the last point, loop
-            if (currentPoint >= WalkPoints.Count)
+
+        if (!BugAgent.pathPending)
+        {
+
+            if (BugAgent.remainingDistance <= BugAgent.stoppingDistance)
             {
-                currentPoint = 0;
+
+                if (!BugAgent.hasPath || BugAgent.velocity.sqrMagnitude == 0f)
+                {
+
+                    //Go to next point
+                    currentPoint += 1;
+
+                    //If we're at the last point, loop
+                    if (currentPoint >= WalkPoints.Count)
+                    {
+                        currentPoint = 0;
+                    }
+
+                    //TakeBreak;
+
+                    Onbreak = true;
+
+
+                }
+            }
+        }
+
+
+        //If player is not around, we stroll
+        if (!PlayerInSight || PlayerAnim.GetBool("sneak") == true && !Onbreak)
+            Stroll(WalkPoints[currentPoint]);
+
+        BugAnim.SetFloat("speed", (BugAgent.velocity.sqrMagnitude));
+
+        //BreakTimer
+        if(Onbreak)
+        {
+
+            timer -= Time.deltaTime;
+            Debug.Log(timer);
+            if (timer <= 0)
+            {
+                Debug.Log("Lets go");
+
+                Onbreak = false;
+                timer = IdleTime;
             }
 
         }
-
-        //If player is not around, we stroll
-        if (PlayerAnim.GetFloat("Speed") < PlayerTooFast && !PlayerInSight)
-            Stroll();
-
-        BugAnim.SetFloat("speed", BugBody.velocity.magnitude);
-
     }
 
 
-    private void Stroll()
+    private void Stroll(Vector3 destination)
     {
-        Vector3 direction = (WalkPoints[currentPoint] - transform.position).normalized;
+        this.destination = destination;
+
+        BugAgent.isStopped = Onbreak;
+        BugAgent.enabled = !Onbreak;
+
         Debug.Log(currentPoint);
-        //Turn Y towards target
-        Quaternion LookAtRotation = Quaternion.LookRotation(direction);
-        Quaternion LookAtTarget = Quaternion.Euler(transform.rotation.eulerAngles.x, LookAtRotation.eulerAngles.y, transform.rotation.eulerAngles.z);
 
-        transform.rotation = LookAtTarget;
+        //To slow down when closer, but I haven't made a functiuon for that yet
+        float distance = Vector3.Distance(destination, transform.position);
 
-        BugBody.AddForce(direction * speed);
+        //to move agent more like a charactercontroller
+        Vector3 movement = transform.forward * Time.deltaTime * TurnSpeed;
+
+        BugAgent.Move(movement);
+        BugAgent.SetDestination(destination);
     }
 
 
     private void flee()
     {
         Debug.Log("HELP!");
+        //Go faster temporary away from player
 
-        Vector3 direction = (Player.transform.position - transform.position).normalized;
-
-        BugBody.AddForce(direction * speed);
     }
 
     private void FlyOff()
     {
-        //Add some type of jump and then return to a walkpoint
+        //Add some type of jump with slow return to gravity, and then return to a walkpoint
 
     }
 
-
     private Vector3 NewPosition(float range)
     {
-        float X = Random.Range(-range, range);
-        float Z = Random.Range(-range, range);
-        Vector3 Position = new Vector3(transform.position.x + X, transform.position.y, transform.position.z + Z);
+        Vector3 randomDirection = Random.insideUnitSphere * range;
+        randomDirection += transform.position;
+        NavMeshHit hit;
+        Vector3 finalPosition = Vector3.zero;
+        if (NavMesh.SamplePosition(randomDirection, out hit, range, 1))
+        {
+            finalPosition = hit.position;
+        }
+        return finalPosition;
 
-        if (Physics.Raycast(Position, -transform.up, 2f, GroundLayer))
-        return Position;
-
-
-        else
-            return Vector3.zero;
     }
 
 }
