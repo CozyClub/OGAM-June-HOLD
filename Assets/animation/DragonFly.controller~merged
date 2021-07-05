@@ -1,9 +1,13 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+<<<<<<< HEAD
 <<<<<<< HEAD:Assets/animation/butterfly.controller
 --- !u!1102 &-6452677759180975078
 =======
 --- !u!1101 &-8940172550478484759
+=======
+--- !u!1101 &-7790014976013680429
+>>>>>>> main
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11,25 +15,41 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
+<<<<<<< HEAD
   - m_ConditionMode: 3
     m_ConditionEvent: speed
     m_EventTreshold: 0.01
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3003825079497415602}
+=======
+  - m_ConditionMode: 4
+    m_ConditionEvent: speed
+    m_EventTreshold: 0.01
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -7676309122948600309}
+>>>>>>> main
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
+<<<<<<< HEAD
   m_ExitTime: 0.67391306
+=======
+  m_ExitTime: 0.423077
+>>>>>>> main
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+<<<<<<< HEAD
 --- !u!1102 &-7607873981310503691
 >>>>>>> Graphics:Assets/animation/DragonFly.controller
+=======
+--- !u!1102 &-7676309122948600309
+>>>>>>> main
 AnimatorState:
   serializedVersion: 5
   m_ObjectHideFlags: 1
@@ -40,11 +60,15 @@ AnimatorState:
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
+<<<<<<< HEAD
 <<<<<<< HEAD:Assets/animation/butterfly.controller
   - {fileID: -1079784127727730807}
 =======
   - {fileID: -8940172550478484759}
 >>>>>>> Graphics:Assets/animation/DragonFly.controller
+=======
+  - {fileID: 7932608830720863128}
+>>>>>>> main
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -54,27 +78,36 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
+<<<<<<< HEAD
 <<<<<<< HEAD:Assets/animation/butterfly.controller
   m_Motion: {fileID: -5252816984213320552, guid: ebafdf63f0eb28e44a3e24811fa7aab9, type: 3}
 =======
   m_Motion: {fileID: 1827226128182048838, guid: c8e5ed01d2328704a930a9b872e8a4f6, type: 3}
 >>>>>>> Graphics:Assets/animation/DragonFly.controller
+=======
+  m_Motion: {fileID: 1827226128182048838, guid: c8e5ed01d2328704a930a9b872e8a4f6, type: 3}
+>>>>>>> main
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+<<<<<<< HEAD
 <<<<<<< HEAD:Assets/animation/butterfly.controller
 --- !u!1102 &-1878099617115221421
 =======
 --- !u!1102 &-3003825079497415602
 >>>>>>> Graphics:Assets/animation/DragonFly.controller
+=======
+--- !u!1102 &-1010959036136750037
+>>>>>>> main
 AnimatorState:
   serializedVersion: 5
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
 <<<<<<< HEAD:Assets/animation/butterfly.controller
   m_Name: flying
   m_Speed: 1
@@ -82,12 +115,18 @@ AnimatorState:
   m_Transitions:
   - {fileID: 7494719262389655497}
 =======
+=======
+>>>>>>> main
   m_Name: fly
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
+<<<<<<< HEAD
   - {fileID: 8948552910384997003}
 >>>>>>> Graphics:Assets/animation/DragonFly.controller
+=======
+  - {fileID: -7790014976013680429}
+>>>>>>> main
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -97,16 +136,21 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
+<<<<<<< HEAD
 <<<<<<< HEAD:Assets/animation/butterfly.controller
   m_Motion: {fileID: 1827226128182048838, guid: ebafdf63f0eb28e44a3e24811fa7aab9, type: 3}
 =======
   m_Motion: {fileID: -2481596286897056705, guid: c8e5ed01d2328704a930a9b872e8a4f6, type: 3}
 >>>>>>> Graphics:Assets/animation/DragonFly.controller
+=======
+  m_Motion: {fileID: -2481596286897056705, guid: c8e5ed01d2328704a930a9b872e8a4f6, type: 3}
+>>>>>>> main
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+<<<<<<< HEAD
 --- !u!1101 &-1079784127727730807
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -157,17 +201,23 @@ AnimatorStateMachine:
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -6452677759180975078}
+=======
+>>>>>>> main
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
 <<<<<<< HEAD:Assets/animation/butterfly.controller
   m_Name: butterfly
 =======
   m_Name: DragonFly
 >>>>>>> Graphics:Assets/animation/DragonFly.controller
+=======
+  m_Name: dragonfly
+>>>>>>> main
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: speed
@@ -175,6 +225,7 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
+<<<<<<< HEAD
     m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
@@ -184,6 +235,13 @@ AnimatorController:
 =======
     m_StateMachine: {fileID: 4860225209119104917}
 >>>>>>> Graphics:Assets/animation/DragonFly.controller
+=======
+    m_Controller: {fileID: 9100000}
+  m_AnimatorLayers:
+  - serializedVersion: 5
+    m_Name: Base Layer
+    m_StateMachine: {fileID: 6590041439264267033}
+>>>>>>> main
     m_Mask: {fileID: 0}
     m_Motions: []
     m_Behaviours: []
@@ -193,10 +251,14 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
+<<<<<<< HEAD
 <<<<<<< HEAD:Assets/animation/butterfly.controller
 --- !u!1101 &7494719262389655497
 =======
 --- !u!1107 &4860225209119104917
+=======
+--- !u!1107 &6590041439264267033
+>>>>>>> main
 AnimatorStateMachine:
   serializedVersion: 5
   m_ObjectHideFlags: 1
@@ -206,11 +268,19 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
+<<<<<<< HEAD
     m_State: {fileID: -7607873981310503691}
     m_Position: {x: 340, y: 150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3003825079497415602}
     m_Position: {x: 450, y: 20, z: 0}
+=======
+    m_State: {fileID: -7676309122948600309}
+    m_Position: {x: 190, y: 260, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -1010959036136750037}
+    m_Position: {x: 511, y: 159, z: 0}
+>>>>>>> main
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -220,9 +290,14 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
+<<<<<<< HEAD
   m_DefaultState: {fileID: -7607873981310503691}
 --- !u!1101 &8948552910384997003
 >>>>>>> Graphics:Assets/animation/DragonFly.controller
+=======
+  m_DefaultState: {fileID: -7676309122948600309}
+--- !u!1101 &7932608830720863128
+>>>>>>> main
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -230,6 +305,7 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
+<<<<<<< HEAD
   - m_ConditionMode: 4
     m_ConditionEvent: speed
     m_EventTreshold: 0.01
@@ -239,17 +315,28 @@ AnimatorStateTransition:
 =======
   m_DstState: {fileID: -7607873981310503691}
 >>>>>>> Graphics:Assets/animation/DragonFly.controller
+=======
+  - m_ConditionMode: 3
+    m_ConditionEvent: speed
+    m_EventTreshold: 0.01
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -1010959036136750037}
+>>>>>>> main
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
+<<<<<<< HEAD
 <<<<<<< HEAD:Assets/animation/butterfly.controller
   m_ExitTime: 0.5
 =======
   m_ExitTime: 0.423077
 >>>>>>> Graphics:Assets/animation/DragonFly.controller
+=======
+  m_ExitTime: 0.67391306
+>>>>>>> main
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0

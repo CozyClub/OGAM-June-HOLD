@@ -101,7 +101,11 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
+<<<<<<< HEAD
     globalScale: 1
+=======
+    globalScale: 0.5
+>>>>>>> main
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -152,7 +156,11 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+<<<<<<< HEAD
     globalScale: 1
+=======
+    globalScale: 0.5
+>>>>>>> main
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

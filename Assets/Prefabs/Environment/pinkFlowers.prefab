@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3833987129412383975}
   - component: {fileID: 187697004456213314}
+  - component: {fileID: 1937183515868730862}
   - component: {fileID: 4875683796461700630}
-  - component: {fileID: 6383982964631253697}
   m_Layer: 0
   m_Name: pinkFlowers
   m_TagString: Untagged
@@ -41,6 +41,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4503281144820346461}
   m_Mesh: {fileID: 1091821279381748248, guid: b6d20e34cbe69e847ba36119b1d3f98e, type: 3}
+--- !u!65 &1937183515868730862
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4503281144820346461}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2922432, y: 1.1276736, z: 1.2735989}
+  m_Center: {x: 0.015227141, y: 0.52203774, z: 0.165518}
 --- !u!137 &4875683796461700630
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -93,17 +106,3 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.015227139, y: 0.5220377, z: 0.16551799}
     m_Extent: {x: 0.64612156, y: 0.56383675, z: 0.6367994}
   m_DirtyAABB: 0
---- !u!64 &6383982964631253697
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4503281144820346461}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 1091821279381748248, guid: b6d20e34cbe69e847ba36119b1d3f98e, type: 3}

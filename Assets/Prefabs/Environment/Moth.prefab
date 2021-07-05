@@ -459,7 +459,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5576411271672652317}
   - component: {fileID: 5398089705193879557}
-  - component: {fileID: 5396838092420621950}
   m_Layer: 0
   m_Name: Moth
   m_TagString: Untagged
@@ -476,7 +475,7 @@ Transform:
   m_GameObject: {fileID: 5055488687949232295}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 15.188145, y: 1.58, z: 42.13691}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 2.9304, y: 2.9304, z: 2.9304}
   m_Children:
   - {fileID: 6295739845796223279}
   m_Father: {fileID: 0}
@@ -501,20 +500,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!136 &5396838092420621950
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5055488687949232295}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.11
-  m_Height: 0.42
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: -0.21}
 --- !u!1 &5419064760727313961
 GameObject:
   m_ObjectHideFlags: 0

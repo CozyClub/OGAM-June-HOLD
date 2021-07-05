@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &38052030469556786
+--- !u!1 &3894745971593348143
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,37 +8,55 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 850301485407178888}
-  - component: {fileID: 5065326974057803633}
-  - component: {fileID: 830079231041248558}
+  - component: {fileID: 4415562280914443925}
+  - component: {fileID: 786126533127033136}
+<<<<<<< HEAD
+  - component: {fileID: 3245994322266105338}
+  - component: {fileID: 1785049681704421908}
+=======
+  - component: {fileID: 3811082020422231526}
+>>>>>>> Graphics
   m_Layer: 0
-  m_Name: YellowDaisy 1
+  m_Name: YellowDaisy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &850301485407178888
+--- !u!4 &4415562280914443925
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 38052030469556786}
+  m_GameObject: {fileID: 3894745971593348143}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 94.54341, y: 0.3219862, z: 54.1}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalPosition: {x: 15.99, y: 3.04, z: 38.715}
+  m_LocalScale: {x: 3.3319, y: 3.3319, z: 3.3319}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &5065326974057803633
-SkinnedMeshRenderer:
+--- !u!33 &786126533127033136
+MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 38052030469556786}
+  m_GameObject: {fileID: 3894745971593348143}
+  m_Mesh: {fileID: 4610782629511885473, guid: e22e0685d967e894ba30404dfce41c72, type: 3}
+<<<<<<< HEAD
+--- !u!23 &3245994322266105338
+MeshRenderer:
+=======
+--- !u!137 &3811082020422231526
+SkinnedMeshRenderer:
+>>>>>>> Graphics
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3894745971593348143}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -46,7 +64,11 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+<<<<<<< HEAD
+  m_RayTracingMode: 2
+=======
   m_RayTracingMode: 3
+>>>>>>> Graphics
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
@@ -72,6 +94,22 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+<<<<<<< HEAD
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1785049681704421908
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3894745971593348143}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.58, y: 2.032295, z: 0.72}
+  m_Center: {x: -0.0063229795, y: 0.06850525, z: -0.09219151}
+=======
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -81,20 +119,7 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: -0.05821395, y: 1.0052457, z: 0.06821239}
+    m_Center: {x: -0.05821395, y: 1.0052457, z: 0.06821242}
     m_Extent: {x: 1.330856, y: 1.0262628, z: 0.717003}
   m_DirtyAABB: 0
---- !u!64 &830079231041248558
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 38052030469556786}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+>>>>>>> Graphics

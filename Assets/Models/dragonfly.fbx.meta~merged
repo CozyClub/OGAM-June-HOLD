@@ -5,6 +5,12 @@ ModelImporter:
   internalIDToNameTable:
   - first:
       74: 1827226128182048838
+<<<<<<< HEAD
+    second: fly
+  - first:
+      74: -5252816984213320552
+    second: idle
+=======
     second: idle
   - first:
       74: 3387807953527668366
@@ -12,6 +18,7 @@ ModelImporter:
   - first:
       74: -2481596286897056705
     second: fly
+>>>>>>> Graphics
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -101,7 +108,11 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
+<<<<<<< HEAD
+    globalScale: 10
+=======
     globalScale: 1
+>>>>>>> Graphics
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -130,7 +141,11 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
+<<<<<<< HEAD
+    useFileScale: 1
+=======
     useFileScale: 0
+>>>>>>> Graphics
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -152,7 +167,11 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+<<<<<<< HEAD
+    globalScale: 10
+=======
     globalScale: 1
+>>>>>>> Graphics
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
