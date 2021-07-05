@@ -5,6 +5,7 @@ using TMPro;
 
 public class UpdateTimerValue : MonoBehaviour
 {
+    //Manages the values of the TextMesh Pro to show values
     public enum TimeStamp{Hours, Minutes, Seconds, Days}
     public TimeStamp currentReading;
     private TextMeshProUGUI textField;

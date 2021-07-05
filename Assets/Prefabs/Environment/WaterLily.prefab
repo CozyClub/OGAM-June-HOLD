@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 9124116181603731396}
   - component: {fileID: 990290983211967571}
   - component: {fileID: 3306965255496583997}
-  - component: {fileID: 452916446893151536}
+  - component: {fileID: 3109616756247097984}
   m_Layer: 0
   m_Name: WaterLily
   m_TagString: Untagged
@@ -209,8 +209,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &452916446893151536
-SphereCollider:
+--- !u!65 &3109616756247097984
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -220,5 +220,5 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.45506418
-  m_Center: {x: 0.000000014901161, y: 0.039288267, z: 0.00000023841858}
+  m_Size: {x: 0.55, y: 0.09, z: 0.6}
+  m_Center: {x: -0.00000093877316, y: 0.1, z: 0.00000008940696}

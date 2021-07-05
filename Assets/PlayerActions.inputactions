@@ -10,8 +10,24 @@
                     "type": "Value",
                     "id": "a63cdcef-a8e5-4f43-b618-5c6d81e987a1",
                     "expectedControlType": "Vector2",
-                    "processors": "",
+                    "processors": "NormalizeVector2",
                     "interactions": ""
+                },
+                {
+                    "name": "Crouch",
+                    "type": "Button",
+                    "id": "95b9a9ec-b745-473a-8a4e-1e136c4682a6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "75c6c36d-df9d-45d8-a5a3-5c6411bc875f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 },
                 {
                     "name": "Look",
@@ -27,7 +43,7 @@
                     "id": "54f13953-69ef-47ae-937e-2c21aa82d13f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press"
                 },
                 {
                     "name": "OpenCamera",
@@ -35,12 +51,20 @@
                     "id": "ebad1c8d-7e43-4668-bcfe-99525193c9e1",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press"
                 },
                 {
                     "name": "CloseCamera",
                     "type": "Button",
                     "id": "f26ebf74-00d2-4f58-9666-e7bd3d6f38f5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "ToggleMenu",
+                    "type": "Button",
+                    "id": "d6e35e90-0d00-477d-a05c-c498e1d4a72e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -215,7 +239,7 @@
                 {
                     "name": "",
                     "id": "143bb1cd-cc10-4eca-a2f0-a3664166fe91",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -270,7 +294,7 @@
                 {
                     "name": "",
                     "id": "98bd1aa6-8c1a-493a-a696-1cff88329ca3",
-                    "path": "<Keyboard>/space",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -292,7 +316,7 @@
                 {
                     "name": "",
                     "id": "4f617eb4-b44e-4e13-8b02-6cc34f7005d8",
-                    "path": "<Gamepad>/dpad/right",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -308,6 +332,72 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "CloseCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "50e3c8cb-6925-4f08-bbe8-6482473cbf9d",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ToggleMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1383838c-011e-499d-b47a-e45c26facc80",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "ToggleMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "12f6d750-5313-4320-a907-44ef6f65fe0a",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "632b6169-d75b-4211-95e7-2bf49065355a",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0e19651b-9d4d-4797-bdb3-21538ee03470",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0efcd3ec-95cd-41ac-8d9a-060e0857e24f",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
