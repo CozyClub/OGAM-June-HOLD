@@ -138,7 +138,7 @@ ModelImporter:
       takeName: Take 001
       internalID: 0
       firstFrame: 120
-      lastFrame: 146
+      lastFrame: 161
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -166,8 +166,8 @@ ModelImporter:
       name: sneak
       takeName: Take 001
       internalID: 0
-      firstFrame: 147
-      lastFrame: 191
+      firstFrame: 162
+      lastFrame: 204
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
