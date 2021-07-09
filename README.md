@@ -1,4 +1,4 @@
-# One Game a Month Game Jam - June
+# One Game a Month Game Jam - June - ON HOLD
 
 ## Contributors
 - Croknight [@croconut](https://github.com/croconut) - Programmer
